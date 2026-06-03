@@ -148,6 +148,8 @@
 | `delete_ads.py` | 广告邮件删除脚本（扫描+删除） |
 | `diagnose_imap.py` | Gmail IMAP 连接诊断 |
 | `debug_fetch.py` | IMAP 响应格式调试 |
+| `scan_all.py` | 全量扫描脚本（所有文件夹） |
+| `delete_all_ads.py` | 批量删除脚本（跨文件夹） |
 
 ### 📂 mail/ — 其他文件
 
