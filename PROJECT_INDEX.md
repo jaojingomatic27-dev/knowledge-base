@@ -8,6 +8,7 @@
 |------|------|------|
 | 📋 | `CLAUDE.md` | 全局规则 |
 | 📋 | `PROJECT_INDEX.md` | 本索引文件 |
+| 📋 | `PROJECT_LOG.md` | 全局项目日志 |
 | 📋 | `account.txt` | GitHub 账号信息 |
 
 ---
@@ -125,6 +126,7 @@
 | 文件 | 说明 |
 |------|------|
 | `CLAUDE.md` | stock 项目专用规则 |
+| `PROJECT_LOG.md` | stock 项目日志 |
 | `DCA_RULES_FINAL.txt` | DCA 策略最终结论报告 |
 | `.gitignore` | Git 忽略规则 |
 
