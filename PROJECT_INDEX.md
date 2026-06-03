@@ -23,6 +23,7 @@
 |------|------|------|
 | `all6_backtest.py` | 13KB | 6 资产综合回测（MA交叉+动量） |
 | `chart_4stock_comparison.py` | 7.6KB | 4 只股票对比图 |
+| `chart_6pairs_annual.py` | — | 6组年度轮动总图脚本 |
 | `chart_threshold_scan.py` | 8.4KB | 阈值扫描图表 |
 | `check_googl_amzn.py` | 294B | GOOGL/AMZN 数据检查 |
 | `check_nvda.py` | 583B | NVDA 数据检查 |
@@ -49,6 +50,7 @@
 | `rotation_backtest_googl_amzn.py` | 16.5KB | GOOGL/AMZN 轮动回测 |
 | `rotation_threshold_scan.py` | 4.8KB | 轮动阈值扫描 |
 | `rotation_threshold_scan_googl_amzn.py` | 4.9KB | GOOGL/AMZN 轮动阈值扫描 |
+| `threshold_scan_4pairs.py` | — | 4组新股对阈值+杠杆扫描 |
 | `shy_backtest.py` | 28KB | SHY 债券回测 |
 | `spy_2000_bear.py` | 7.1KB | SPY 2000 熊市分析 |
 | `spy_backtest.py` | 12.6KB | SPY 回测 |
@@ -116,6 +118,8 @@
 | `SHY_comparison.png` | 900.8KB | SHY 对比图 |
 | `SPY_GOOGL_NVDA_chart.png` | 381KB | SPY/GOOGL/NVDA 对比 |
 | `chart_4stock_comparison.png` | 301.8KB | 4 股对比图 |
+| `chart_6pairs_annual.png` | — | 6组年度 3x/20% vs B&H 总图 |
+| `threshold_scan_4pairs.png` | — | 4组阈值扫描对比图 |
 | `threshold_scan_chart.png` | 293.5KB | 阈值扫描图 |
 | `chart_annual_rotation_vs_bh.png` | — | 年度轮动 3x/20% vs B&H |
 | `threshold_scan_4pairs.png` | — | 4组新股对阈值扫描总图 |
