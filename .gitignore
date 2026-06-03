@@ -1,0 +1,21 @@
+# 敏感信息
+account.txt
+.claude/settings.local.json
+
+# stock 子项目有独立仓库
+stock/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
