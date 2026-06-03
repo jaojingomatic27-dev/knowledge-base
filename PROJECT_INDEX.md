@@ -1,6 +1,6 @@
 # 项目文件索引
 
-> 生成于 2026-06-03 | 更新于 2026-06-03（按 CLAUDE.md 规则整理）
+> 生成于 2026-06-03 | 更新于 2026-06-04（新增4组轮动+6组总图）
 
 ## 根目录 C:\AI\cc
 
@@ -56,6 +56,17 @@
 | `warrants_full_backtest.py` | 21.5KB | 权证完整回测 |
 | `warrant_3x_vs_5x.py` | 5.2KB | 3倍 vs 5倍权证对比 |
 | `warrant_5x_compare.py` | 6.4KB | 5倍权证对比 |
+| `rotation_vs_worst_stock.py` | 7.4KB | 轮动 vs 表现差股票对比 |
+| `leverage_2016_all4.py` | 8.9KB | 4只股票10年杠杆优化 |
+| `leverage_optimize_googl_amzn.py` | 13.4KB | GOOGL/AMZN 杠杆优化 |
+| `threshold_2016_nvda_mu.py` | 8.1KB | NVDA/MU 10年阈值扫描 |
+| `threshold_2016_googl_amzn.py` | 7.2KB | GOOGL/AMZN 10年阈值扫描 |
+| `rotation_2016_nvda_mu.py` | 6.8KB | NVDA/MU 10年轮动 |
+| `rotation_2016_googl_amzn.py` | 6.7KB | GOOGL/AMZN 10年轮动 |
+| `annual_rolling.py` | 8.2KB | 年度滚动回测（两对） |
+| `chart_annual_rotation_vs_bh.py` | 4.6KB | 年度轮动 vs B&H 图表 |
+| `threshold_scan_4pairs.py` | 11.3KB | 4组新股对阈值+杠杆扫描 |
+| `chart_6pairs_annual.py` | 9.1KB | 6组年度轮动 vs B&H 总图 |
 
 ### 📂 stock/data/ — 已下载数据
 
@@ -81,6 +92,10 @@
 | `SPY_daily.csv` | 382.2KB | SPY ETF 日线 |
 | `SPY_full.csv` | 768.5KB | SPY 完整历史 |
 | `stocks_daily.csv` | 759.1KB | 多股票合并数据 |
+| `NVDA_2016_daily.csv` | — | NVDA 2016-2026 日线 |
+| `MU_2016_daily.csv` | — | MU 2016-2026 日线 |
+| `GOOGL_2016_daily.csv` | — | GOOGL 2016-2026 日线 |
+| `AMZN_2016_daily.csv` | — | AMZN 2016-2026 日线 |
 
 ### 📂 stock/image/ — 生成的图表
 
@@ -101,6 +116,9 @@
 | `SPY_GOOGL_NVDA_chart.png` | 381KB | SPY/GOOGL/NVDA 对比 |
 | `chart_4stock_comparison.png` | 301.8KB | 4 股对比图 |
 | `threshold_scan_chart.png` | 293.5KB | 阈值扫描图 |
+| `chart_annual_rotation_vs_bh.png` | — | 年度轮动 3x/20% vs B&H |
+| `threshold_scan_4pairs.png` | — | 4组新股对阈值扫描总图 |
+| `chart_6pairs_annual.png` | — | 全部6组年度轮动总图 |
 
 ### 📂 stock/ — 其他文件
 
