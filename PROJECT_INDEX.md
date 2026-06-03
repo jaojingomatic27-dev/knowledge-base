@@ -136,9 +136,24 @@
 
 ---
 
-## 📁 mail/
+## 📁 mail/ — 邮箱清理工具
 
-待开发
+**GitHub**: https://github.com/jaojingomatic27-dev/mail
+
+### 📂 mail/code/ — 脚本代码
+
+| 文件 | 功能 |
+|------|------|
+| `scan_ads.py` | 广告邮件扫描脚本（只读，按类别展示） |
+| `delete_ads.py` | 广告邮件删除脚本（扫描+删除） |
+| `diagnose_imap.py` | Gmail IMAP 连接诊断 |
+| `debug_fetch.py` | IMAP 响应格式调试 |
+
+### 📂 mail/ — 其他文件
+
+| 文件 | 说明 |
+|------|------|
+| `PROJECT_LOG.md` | mail 项目日志 |
 
 ## 📁 roof/
 
