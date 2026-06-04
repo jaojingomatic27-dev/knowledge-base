@@ -475,43 +475,39 @@ def _save_translation_cache():
     except Exception:
         pass
 
-# 公司名 → 高亮颜色映射
+# 公司名 → 高亮颜色映射（含 ticker 代码和常见别名）
 COMPANY_HIGHLIGHT_MAP = {
-    "NVIDIA": "NVIDIA",
-    "Nvidia": "NVIDIA",
-    "nvidia": "NVIDIA",
-    "Microsoft": "Microsoft",
-    "microsoft": "Microsoft",
-    "Oracle": "Oracle",
-    "oracle": "Oracle",
-    "Palantir": "Palantir",
-    "palantir": "Palantir",
-    "Tesla": "Tesla",
-    "tesla": "Tesla",
-    "Broadcom": "Broadcom",
-    "broadcom": "Broadcom",
-    "Super Micro": "Super Micro",
-    "Supermicro": "Super Micro",
-    "super micro": "Super Micro",
-    "Elon Musk": "Tesla",
-    "Jensen Huang": "NVIDIA",
-    "S&P 500": "SPY",
-    "SPDR": "SPY",
+    # NVIDIA
+    "NVIDIA": "NVIDIA", "Nvidia": "NVIDIA", "nvidia": "NVIDIA", "NVDA": "NVIDIA",
+    # Microsoft
+    "Microsoft": "Microsoft", "microsoft": "Microsoft", "MSFT": "Microsoft",
+    # Oracle
+    "Oracle": "Oracle", "oracle": "Oracle", "ORCL": "Oracle",
+    # Palantir
+    "Palantir": "Palantir", "palantir": "Palantir", "PLTR": "Palantir",
+    # Tesla
+    "Tesla": "Tesla", "tesla": "Tesla", "TSLA": "Tesla",
+    # Broadcom
+    "Broadcom": "Broadcom", "broadcom": "Broadcom", "AVGO": "Broadcom",
+    # Super Micro
+    "Super Micro": "Super Micro", "Supermicro": "Super Micro",
+    "super micro": "Super Micro", "SMCI": "Super Micro",
+    # SPY
+    "S&P 500": "SPY", "SPDR": "SPY",
+    # 不映射的通用词
     "ETF": "",
 }
 
 # 中文公司名 → 英文 tag 映射（用于中文翻译文本高亮）
 CN_COMPANY_NAMES = {
-    "英伟达": "NVIDIA",
-    "Nvidia": "NVIDIA",
+    "英伟达": "NVIDIA", "辉达": "NVIDIA",
     "微软": "Microsoft",
     "甲骨文": "Oracle",
-    "帕兰提尔": "Palantir",
+    "帕兰提尔": "Palantir", "帕兰蒂尔": "Palantir",
     "特斯拉": "Tesla",
     "博通": "Broadcom",
-    "超微": "Super Micro",
-    "超微电脑": "Super Micro",
-    "标普": "SPY",
+    "超微": "Super Micro", "超微电脑": "Super Micro",
+    "标普": "SPY", "标普500": "SPY", "标准普尔": "SPY",
 }
 
 COMPANY_HIGHLIGHT_COLORS = {
@@ -655,6 +651,80 @@ def extract_themes(items: list[dict], top_n: int = 5) -> list[str]:
     return themes[:top_n]
 
 
+# ═══════════════════════════════════════════════════════════════
+#  天气 + 时区 + 心灵鸡汤
+# ═══════════════════════════════════════════════════════════════
+
+def fetch_weather(city: str, city_cn: str) -> dict:
+    """通过 wttr.in 获取天气（免费，无需 API key）"""
+    try:
+        import urllib.request
+        url = f"https://wttr.in/{city}?format=j1"
+        req = urllib.request.Request(url, headers={"User-Agent": "curl/7.0"})
+        with urllib.request.urlopen(req, timeout=8) as resp:
+            data = json.loads(resp.read().decode())
+        current = data.get("current_condition", [{}])[0]
+        return {
+            "city": city_cn,
+            "temp_c": current.get("temp_C", "?"),
+            "weather_desc": current.get("weatherDesc", [{}])[0].get("value", "?"),
+            "weather_code": current.get("weatherCode", "?"),
+            "humidity": current.get("humidity", "?"),
+            "wind_kmh": current.get("windspeedKmph", "?"),
+        }
+    except Exception as e:
+        return {"city": city_cn, "temp_c": "?", "weather_desc": "?", "weather_code": "?", "humidity": "?", "wind_kmh": "?", "error": str(e)}
+
+def weather_soup(weather_list: list[dict]) -> str:
+    """根据天气生成心灵鸡汤"""
+    # 综合判断：优先看天气代码
+    codes = [w.get("weather_code", "?") for w in weather_list]
+    temps = []
+    for w in weather_list:
+        try:
+            temps.append(int(w.get("temp_c", 15)))
+        except (ValueError, TypeError):
+            temps.append(15)
+    avg_temp = sum(temps) / len(temps) if temps else 15
+
+    # 天气代码: 113=晴, 116/119/122=多云, 176~=雨, 179~=雪, 200~=雷
+    has_rain = any(str(c) in ["176", "179", "182", "185", "200", "227", "230", "248", "260", "263", "266", "281", "284", "293", "296", "299", "302", "305", "308", "311", "314", "317", "320", "323", "326", "329", "332", "335", "338", "341", "344", "347", "350", "353", "356", "359", "362", "365", "368", "371", "374", "377", "386", "389", "392", "395"] for c in codes)
+    has_sun = any(str(c) == "113" for c in codes)
+    has_cloud = any(str(c) in ["116", "119", "122"] for c in codes)
+
+    if has_sun and avg_temp >= 20:
+        return "☀️ 德国阳光正好，莱茵河畔元气满满。投资如天气，阴晴圆缺皆常态，守得云开见月明。"
+    elif has_sun:
+        return "🌤️ 德国晴空万里，虽带凉意却明朗清澈。市场短期是投票机，长期是称重机——好公司终会发光。"
+    elif has_rain:
+        return "🌧️ 法兰克福的雨冲刷不掉你的坚持。市场也会有阴雨天，每一次回调都是为下一次上涨蓄力。"
+    elif has_cloud:
+        return "☁️ 云层之上，阳光从未缺席。短期波动如同云层，遮不住长期向上的趋势。"
+    elif avg_temp >= 25:
+        return "🔥 德国今天热情似火。别让市场的狂热冲昏头脑——别人贪婪时恐惧，别人恐惧时贪婪。"
+    elif avg_temp <= 5:
+        return "❄️ 杜塞尔多夫的寒风提醒我们：熊市如冬，但冬天来了，春天还会远吗？坚持定投，静待花开。"
+    else:
+        return "📈 每一天都是新的开始。市场无法预测，但纪律可以坚守。慢慢变富，来日方长。"
+
+def get_germany_weather() -> tuple[list[dict], str]:
+    """获取法兰克福和杜塞尔多夫天气，返回 (天气列表, 鸡汤)"""
+    cities = [
+        ("Frankfurt", "法兰克福"),
+        ("Duesseldorf", "杜塞尔多夫"),
+    ]
+    weather = []
+    for city, cn in cities:
+        w = fetch_weather(city, cn)
+        weather.append(w)
+        desc = w.get("weather_desc", "?")
+        temp = w.get("temp_c", "?")
+        print(f"    天气 {cn}: {temp}°C, {desc}")
+
+    soup = weather_soup(weather)
+    return weather, soup
+
+
 def generate_briefing(news_list: list[dict]) -> dict:
     """生成简报数据：每个持仓组合的综合评估"""
     # 按投资组合分组
@@ -757,14 +827,33 @@ def generate_briefing(news_list: list[dict]) -> dict:
     }
 
 
-def generate_html_report(news_list: list[dict]) -> str:
+def generate_html_report(news_list: list[dict], weather: list[dict] = None, soup: str = "") -> str:
     """生成简报风格 HTML 邮件"""
     now = datetime.now(timezone.utc)
     bj_now = now.astimezone(timezone(timedelta(hours=8)))
     et_now = now.astimezone(timezone(timedelta(hours=-4)))
+    de_now = now.astimezone(timezone(timedelta(hours=2)))  # CEST (夏季) / CET  +1 (冬季)
 
     data = generate_briefing(news_list)
     bf = data["briefing"]
+
+    # ── 天气行 ──
+    weather_html = ""
+    if weather:
+        weather_parts = []
+        for w in weather:
+            icon_map = {"113": "☀️", "116": "⛅", "119": "☁️", "122": "☁️", "176": "🌦️", "179": "🌧️", "200": "⛈️"}
+            icon = icon_map.get(str(w.get("weather_code", "")), "🌡️")
+            weather_parts.append(
+                f'{icon} {w["city"]} {w["temp_c"]}°C {w["weather_desc"]}'
+            )
+        weather_line = "  ·  ".join(weather_parts)
+        soup_line = f'<div style="color:#c0a060;font-size:12px;margin-top:4px;font-style:italic;">{soup}</div>' if soup else ""
+        weather_html = f"""
+        <div style="background:#1a1f2e;border-radius:8px;padding:10px 16px;margin-bottom:14px;text-align:center;">
+          <div style="color:#a0b0c0;font-size:13px;">🇩🇪 德国时间 {de_now.strftime('%Y-%m-%d %H:%M')} CEST  ·  {weather_line}</div>
+          {soup_line}
+        </div>"""
 
     # ── 整体市场判断 ──
     ms = data["market_score"]
@@ -862,6 +951,9 @@ def generate_html_report(news_list: list[dict]) -> str:
       北京时间 {bj_now.strftime('%Y-%m-%d %H:%M')} | 美东 {et_now.strftime('%Y-%m-%d %H:%M')} EDT | {market_mood}
     </p>
   </div>
+
+  <!-- 德国天气 + 鸡汤 -->
+  {weather_html}
 
   <!-- 概览数字 -->
   <div style="display:flex;justify-content:center;gap:14px;margin-bottom:18px;flex-wrap:wrap;">
@@ -1003,9 +1095,13 @@ def main():
         sentiment_counts[item["sentiment"]["label"]] += 1
     print("   情感分布:", dict(sentiment_counts))
 
+    # 2.5. 获取德国天气
+    print("\n🌤️  获取德国天气...")
+    weather, soup = get_germany_weather()
+
     # 3. 生成报告
     print("\n📝 正在生成 HTML 报告...")
-    html = generate_html_report(news_list)
+    html = generate_html_report(news_list, weather=weather, soup=soup)
 
     # 4. 保存数据
     save_news_data(news_list)
