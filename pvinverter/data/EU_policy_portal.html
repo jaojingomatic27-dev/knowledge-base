@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>欧盟政策知识库 — 中国大储/光储企业出海</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22252f;
+    --border: #2a2d37;
+    --text: #e0e0e0;
+    --text2: #a0a4b0;
+    --accent: #4a90d9;
+    --warn: #e8a840;
+    --danger: #e05555;
+    --green: #4caf84;
+    --star: #f0c040;
+    --nzia: #4a90d9;
+    --iaa: #e05555;
+    --battery: #8b5cf6;
+    --fsr: #e8a840;
+    --cbam: #4caf84;
+    --crma: #38bdf8;
+    --tariff: #f472b6;
+    --pcs: #a78bfa;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    font-family: -apple-system, "Microsoft YaHei", "PingFang SC", sans-serif;
+    background: var(--bg); color: var(--text); line-height:1.7;
+  }
+
+  /* ── Top Bar ── */
+  .topbar {
+    position:fixed; top:0; left:0; right:0; height:52px; z-index:100;
+    background:var(--surface); border-bottom:1px solid var(--border);
+    display:flex; align-items:center; padding:0 20px; gap:12px;
+  }
+  .topbar .hamburger { display:none; background:none; border:none; color:var(--text); font-size:24px; cursor:pointer; line-height:1; }
+  .topbar h1 { font-size:18px; font-weight:700; white-space:nowrap; }
+  .topbar .search-box {
+    margin-left:auto; position:relative;
+  }
+  .topbar .search-box input {
+    background:var(--surface2); border:1px solid var(--border); border-radius:6px;
+    color:var(--text); padding:6px 32px 6px 12px; font-size:13px; width:220px;
+    transition: border-color .2s;
+  }
+  .topbar .search-box input:focus { outline:none; border-color:var(--accent); }
+  .topbar .search-box .clear-btn {
+    position:absolute; right:8px; top:50%; transform:translateY(-50%);
+    background:none; border:none; color:var(--text2); cursor:pointer; font-size:16px;
+    display:none;
+  }
+  .search-results-count { font-size:12px; color:var(--text2); margin-left:8px; display:none; white-space:nowrap; }
+
+  /* ── Sidebar ── */
+  .layout { display:flex; margin-top:52px; min-height:calc(100vh - 52px); }
+  .sidebar {
+    position:fixed; top:52px; left:0; bottom:0; width:260px;
+    background:var(--surface); border-right:1px solid var(--border);
+    overflow-y:auto; padding:16px 0; z-index:50;
+    transition: transform .25s;
+  }
+  .sidebar .toc-title { font-size:13px; font-weight:700; color:var(--text2); padding:0 20px 8px; text-transform:uppercase; letter-spacing:.5px; }
+  .sidebar a {
+    display:block; padding:7px 20px; font-size:13px; color:var(--text2); text-decoration:none;
+    border-left:3px solid transparent; transition: all .15s;
+  }
+  .sidebar a:hover, .sidebar a.active { color:var(--text); background:var(--surface2); border-left-color:var(--accent); }
+  .sidebar a .badge { display:inline-block; font-size:10px; padding:1px 6px; border-radius:3px; margin-left:6px; color:#fff; }
+  .sidebar .toc-sub { font-size:12px; padding-left:36px; }
+  .sidebar .divider { height:1px; background:var(--border); margin:12px 20px; }
+  .sidebar .tag-legend { padding:0 20px; }
+  .sidebar .tag-legend span { display:inline-block; font-size:11px; margin:2px 6px 2px 0; padding:2px 8px; border-radius:3px; color:#fff; }
+
+  /* ── Main Content ── */
+  .main { margin-left:260px; flex:1; padding:32px 40px; max-width:960px; transition: margin-left .25s; }
+  .main.searching .section-card { display:none; }
+  .main.searching .section-card.match { display:block; }
+
+  .section-card {
+    background:var(--surface); border:1px solid var(--border); border-radius:10px;
+    padding:28px 32px; margin-bottom:24px;
+  }
+  .section-card h2 { font-size:22px; margin-bottom:6px; display:flex; align-items:center; gap:10px; }
+  .section-card h2 .dot { display:inline-block; width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .section-card .subtitle { font-size:13px; color:var(--text2); margin-bottom:20px; }
+  .section-card h3 { font-size:17px; margin:24px 0 10px; color:var(--text); }
+  .section-card h4 { font-size:14px; margin:16px 0 8px; color:var(--accent); }
+  .section-card p, .section-card li { font-size:14px; color:var(--text2); }
+  .section-card ul, .section-card ol { padding-left:20px; margin:8px 0; }
+  .section-card li { margin:4px 0; }
+
+  /* tables */
+  .table-wrap { overflow-x:auto; margin:12px 0; }
+  .section-card table { width:100%; border-collapse:collapse; font-size:13px; }
+  .section-card th { background:var(--surface2); color:var(--text); padding:10px 14px; text-align:left; font-weight:600; white-space:nowrap; }
+  .section-card td { padding:9px 14px; border-bottom:1px solid var(--border); color:var(--text2); }
+  .section-card tr:hover td { background:rgba(255,255,255,.02); }
+
+  /* stars */
+  .stars { color:var(--star); letter-spacing:1px; }
+
+  /* callouts */
+  .callout {
+    border-left:4px solid var(--warn); background:rgba(232,168,64,.08);
+    padding:12px 16px; border-radius:0 6px 6px 0; margin:12px 0; font-size:13px;
+  }
+  .callout.danger { border-left-color:var(--danger); background:rgba(224,85,85,.08); }
+  .callout.info { border-left-color:var(--accent); background:rgba(74,144,217,.08); }
+
+  /* impact badges */
+  .impact-badge { display:inline-block; font-size:11px; padding:3px 10px; border-radius:4px; color:#fff; font-weight:600; }
+  .impact-5 { background:var(--danger); }
+  .impact-4 { background:var(--warn); }
+  .impact-3 { background:var(--accent); }
+
+  /* timeline */
+  .timeline { position:relative; padding-left:28px; }
+  .timeline::before { content:''; position:absolute; left:8px; top:4px; bottom:4px; width:2px; background:var(--border); }
+  .timeline .tl-year { font-size:18px; font-weight:700; color:var(--accent); margin:20px 0 8px; position:relative; }
+  .timeline .tl-year::before {
+    content:''; position:absolute; left:-24px; top:8px; width:10px; height:10px;
+    border-radius:50%; background:var(--accent); border:2px solid var(--bg);
+  }
+  .timeline .tl-item { font-size:13px; color:var(--text2); margin:6px 0; padding:4px 0; line-height:1.5; }
+  .timeline .tl-item strong { color:var(--text); }
+
+  /* footer */
+  .conclusion-box {
+    background:linear-gradient(135deg, rgba(74,144,217,.1), rgba(224,85,85,.1));
+    border:1px solid var(--border); border-radius:10px; padding:24px 28px; margin-top:24px;
+  }
+  .conclusion-box h3 { margin-top:0; color:var(--warn); }
+
+  /* responsive */
+  @media (max-width: 900px) {
+    .sidebar { transform:translateX(-100%); }
+    .sidebar.open { transform:translateX(0); }
+    .main { margin-left:0; padding:20px 16px; }
+    .topbar .hamburger { display:block; }
+    .topbar .search-box input { width:140px; }
+  }
+
+  /* print */
+  @media print {
+    .sidebar, .topbar { display:none; }
+    .main { margin-left:0; }
+    .section-card { break-inside:avoid; border:1px solid #ccc; }
+  }
+
+  /* scrollbar */
+  .sidebar::-webkit-scrollbar { width:5px; }
+  .sidebar::-webkit-scrollbar-thumb { background:var(--border); border-radius:3px; }
+
+  .highlight { background:rgba(240,192,64,.3); padding:0 2px; border-radius:2px; }
+
+  /* policy card grid */
+  .policy-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:14px; margin:12px 0; }
+  .policy-card {
+    background:var(--surface2); border-radius:8px; padding:16px; border:1px solid var(--border);
+    transition: border-color .2s;
+  }
+  .policy-card:hover { border-color:var(--accent); }
+  .policy-card .pc-header { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+  .policy-card .pc-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .policy-card .pc-title { font-weight:700; font-size:14px; }
+  .policy-card .pc-date { font-size:11px; color:var(--text2); }
+  .policy-card .pc-desc { font-size:12px; color:var(--text2); line-height:1.5; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ TOP BAR ═══════════ -->
+<nav class="topbar">
+  <button class="hamburger" id="hamburger" title="菜单" onclick="toggleSidebar()">☰</button>
+  <h1>🛡️ 欧盟政策知识库</h1>
+  <span style="font-size:12px;color:var(--text2)">中国大储/光储企业出海</span>
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="搜索政策、条款、企业…" oninput="doSearch()">
+    <button class="clear-btn" id="clearBtn" onclick="clearSearch()">✕</button>
+  </div>
+  <span class="search-results-count" id="resultsCount"></span>
+</nav>
+
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<aside class="sidebar" id="sidebar">
+  <div class="toc-title">📑 政策索引</div>
+  <a href="#s-overview" class="active" onclick="closeSidebarMobile()">📊 总览：七重政策壁垒</a>
+
+  <div class="divider"></div>
+  <div class="toc-title">📋 法案法规</div>
+  <a href="#s-nzia" onclick="closeSidebarMobile()"><span class="badge" style="background:var(--nzia)">NZIA</span> 净零工业法案</a>
+  <a href="#s-iaa" onclick="closeSidebarMobile()"><span class="badge" style="background:var(--iaa)">IAA</span> 工业加速器法案</a>
+  <a href="#s-battery" onclick="closeSidebarMobile()"><span class="badge" style="background:var(--battery)">BATT</span> 电池法规 2023/1542</a>
+  <a href="#s-fsr" onclick="closeSidebarMobile()"><span class="badge" style="background:var(--fsr)">FSR</span> 外国补贴条例</a>
+  <a href="#s-cbam" onclick="closeSidebarMobile()"><span class="badge" style="background:var(--cbam)">CBAM</span> 碳边境调节机制</a>
+  <a href="#s-crma" onclick="closeSidebarMobile()"><span class="badge" style="background:var(--crma)">CRMA</span> 关键原材料法案</a>
+
+  <div class="divider"></div>
+  <div class="toc-title">⚡ 专项限制</div>
+  <a href="#s-tariff" onclick="closeSidebarMobile()"><span class="badge" style="background:var(--tariff)">关税</span> 光伏临时关税</a>
+  <a href="#s-pcs" onclick="closeSidebarMobile()"><span class="badge" style="background:var(--pcs)">PCS</span> 储能变流器限制</a>
+
+  <div class="divider"></div>
+  <div class="toc-title">📈 影响 & 策略</div>
+  <a href="#s-impact" onclick="closeSidebarMobile()">📊 中国企业影响评估</a>
+  <a href="#s-strategy" onclick="closeSidebarMobile()">🎯 应对策略</a>
+  <a href="#s-timeline" onclick="closeSidebarMobile()">📅 关键时间线</a>
+  <a href="#s-sources" onclick="closeSidebarMobile()">📚 信息来源</a>
+
+  <div class="divider"></div>
+  <div class="tag-legend">
+    <span style="background:var(--danger)">★★★★★ 极高</span>
+    <span style="background:var(--warn)">★★★★ 高</span>
+    <span style="background:var(--accent)">★★★ 中</span>
+  </div>
+</aside>
+
+<!-- ═══════════ MAIN CONTENT ═══════════ -->
+<main class="main" id="mainContent">
+
+<!-- ── 0. Policy Quick Cards ── -->
+<section class="section-card" id="s-overview">
+  <h2><span class="dot" style="background:var(--accent)"></span>总览：七重政策壁垒</h2>
+  <p class="subtitle">2024–2026年欧盟对中国储能+光伏企业构建的完整政策矩阵</p>
+
+  <div class="policy-grid">
+    <div class="policy-card" data-keywords="NZIA 净零工业法案 非价格标准 公共采购 本土制造">
+      <div class="pc-header"><span class="pc-dot" style="background:var(--nzia)"></span><span class="pc-title">净零工业法案 NZIA</span></div>
+      <div class="pc-date">2025年7月全面实施</div>
+      <div class="pc-desc">公共采购排除中国产品，非价格标准限制，>50%依赖即触发</div>
+      <div class="stars" style="margin-top:4px">★★★★★</div>
+    </div>
+
+    <div class="policy-card" data-keywords="IAA 工业加速器 原产地 技术转让 六选四 外商投资">
+      <div class="pc-header"><span class="pc-dot" style="background:var(--iaa)"></span><span class="pc-title">工业加速器法案 IAA</span></div>
+      <div class="pc-date">2026年3月提案</div>
+      <div class="pc-desc">"欧洲制造"原产地要求，强制技术转让，"六选四"准入</div>
+      <div class="stars" style="margin-top:4px">★★★★★</div>
+    </div>
+
+    <div class="policy-card" data-keywords="电池法规 碳足迹 数字护照 供应链 尽职调查 2023/1542">
+      <div class="pc-header"><span class="pc-dot" style="background:var(--battery)"></span><span class="pc-title">欧盟电池法规</span></div>
+      <div class="pc-date">2023–2028分阶段实施</div>
+      <div class="pc-desc">碳足迹声明→等级标签→超标禁售；数字护照；供应链尽职调查</div>
+      <div class="stars" style="margin-top:4px">★★★★</div>
+    </div>
+
+    <div class="policy-card" data-keywords="FSR 外国补贴 反补贴 调查 黎明突袭 罗马尼亚">
+      <div class="pc-header"><span class="pc-dot" style="background:var(--fsr)"></span><span class="pc-title">外国补贴条例 FSR</span></div>
+      <div class="pc-date">2023年7月已生效</div>
+      <div class="pc-desc">调查中国企业不公平补贴，2024年全部深入调查针对中企</div>
+      <div class="stars" style="margin-top:4px">★★★★</div>
+    </div>
+
+    <div class="policy-card" data-keywords="CBAM 碳边境 碳关税 碳价 碳足迹认证">
+      <div class="pc-header"><span class="pc-dot" style="background:var(--cbam)"></span><span class="pc-title">碳边境调节 CBAM</span></div>
+      <div class="pc-date">2026年1月正式收费</div>
+      <div class="pc-desc">碳成本内部化，组件碳关税600–1000万元/GW，削弱价格优势</div>
+      <div class="stars" style="margin-top:4px">★★★★</div>
+    </div>
+
+    <div class="policy-card" data-keywords="CRMA 关键原材料 稀土 锂 去中国化 资源EU">
+      <div class="pc-header"><span class="pc-dot" style="background:var(--crma)"></span><span class="pc-title">关键原材料法案 CRMA</span></div>
+      <div class="pc-date">2024年4月通过</div>
+      <div class="pc-desc">2030本土开采10%加工40%回收15%，单一来源≤65%</div>
+      <div class="stars" style="margin-top:4px">★★★★</div>
+    </div>
+
+    <div class="policy-card" data-keywords="光伏 关税 组件 临时关税 2025">
+      <div class="pc-header"><span class="pc-dot" style="background:var(--tariff)"></span><span class="pc-title">光伏临时关税</span></div>
+      <div class="pc-date">2025年6月23日</div>
+      <div class="pc-desc">对原产于中国的光伏组件征收临时关税，对欧出口或降15-20%</div>
+      <div class="stars" style="margin-top:4px">★★★</div>
+    </div>
+
+    <div class="policy-card" data-keywords="PCS 储能变流器 逆变器 公共资金 融资 EIB">
+      <div class="pc-header"><span class="pc-dot" style="background:var(--pcs)"></span><span class="pc-title">储能PCS限制</span></div>
+      <div class="pc-date">2026年5月</div>
+      <div class="pc-desc">中国PCS不得获欧盟公共融资(EIB/EIF)，约61.82GWh受影响</div>
+      <div class="stars" style="margin-top:4px">★★★</div>
+    </div>
+  </div>
+
+  <div class="callout danger" style="margin-top:18px;">
+    <strong>⚠️ 叠加效果</strong>：不在欧洲建厂 → 系统性失去政府补贴项目资格；在欧洲建厂 → 面临强制技术转让 + 控制权限制 + 本地化高门槛。
+  </div>
+</section>
+
+<!-- ── 2. NZIA ── -->
+<section class="section-card" id="s-nzia" data-keywords="NZIA 净零工业法案 Net-Zero 非价格标准 本土制造 供应链依赖 中国特设条款 C(2025)2900">
+  <h2><span class="dot" style="background:var(--nzia)"></span>净零工业法案 (NZIA)</h2>
+  <p class="subtitle">Net-Zero Industry Act · 2024年4月通过 · 2025年7月全面实施</p>
+
+  <h3>核心内容</h3>
+  <ul>
+    <li><strong>2030年目标</strong>：欧盟清洁能源设备 <strong>40%</strong> 本土制造</li>
+    <li><strong>"非价格标准"拍卖规则</strong>：2025年12月30日起，至少 <strong>30%（或6GW）</strong> 的可再生能源拍卖须评估供应链韧性、网络安全和可持续性</li>
+    <li><strong>供应链依赖阈值</strong>：若单一第三国供应 &gt;50% 某产品类别，公共采购要求 <strong>≥50%价值来自欧盟</strong>，违者罚款最高 <strong>合同额10%</strong></li>
+  </ul>
+
+  <h3>针对中国的具体限制（C(2025)2900 号实施条例）</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>产品类别</th><th>限制内容</th></tr>
+    <tr><td><strong>电池储能（通用）</strong></td><td>最终产品不得在触发国（中国）组装；至少4个主要组件不得来自中国</td></tr>
+    <tr><td><strong>陆上风电</strong></td><td>75%产品价值需非中国来源；最多3个中国组件；齿轮箱等关键部件须本地化</td></tr>
+    <tr><td><strong>电解槽</strong></td><td>≥75%价值来自非中国供应链；数据须在EEA本地化存储</td></tr>
+  </table>
+  </div>
+
+  <div class="callout danger">
+    <strong>第7(3)条"中国特设条款"</strong>：即使未触发 &gt;50% 依赖阈值，陆上风电、海上风电和电解槽仍须限制中国内容。
+  </div>
+
+  <h3>实施时间线</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>日期</th><th>里程碑</th></tr>
+    <tr><td>2025年3月</td><td>战略项目指南实施法案</td></tr>
+    <tr><td>2025年4月</td><td>公共采购环境可持续性要求 / 拍卖预审标准 / 净零技术组件授权法案</td></tr>
+    <tr><td>2025年5月23日</td><td><strong>次级立法发布：非价格标准、依赖阈值、组件清单</strong></td></tr>
+    <tr><td>2025年7月</td><td>法案全面实施</td></tr>
+    <tr><td>2025年12月30日</td><td><strong>非价格标准生效（≥30%可再生能源拍卖）</strong></td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- ── 3. IAA ── -->
+<section class="section-card" id="s-iaa" data-keywords="IAA 工业加速器法案 Industrial Accelerator 原产地 欧洲制造 技术转让 六选四 外商投资 BESS BMS 电芯 公共采购 GPA">
+  <h2><span class="dot" style="background:var(--iaa)"></span>工业加速器法案 (IAA)</h2>
+  <p class="subtitle">Industrial Accelerator Act · 2026年3月4日提案 · 欧洲议会审议中</p>
+  <p style="color:var(--warn);font-size:13px;">🎯 目标：2035年制造业占GDP从14.3%提升至20%</p>
+
+  <h3>电池储能系统 (BESS) 原产地要求</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>阶段</th><th>要求</th></tr>
+    <tr><td>法案生效后 1–3 年</td><td>BESS 须为"欧盟原产"；&gt;1MWh 系统 BMS 须欧盟原产</td></tr>
+    <tr><td>法案生效后 3 年+</td><td>BESS 须欧盟原产，<strong>且</strong>电芯 + BMS + 至少1个其他核心部件须欧盟原产</td></tr>
+  </table>
+  </div>
+
+  <h3>外商投资"六选四"强制审查 ⚠️</h3>
+  <p><strong>触发条件</strong>：单笔投资 &gt;1亿欧元 + 属新兴战略制造领域 + 母国全球产能占比 &gt;40%</p>
+  <div class="callout danger">
+    ⚠️ 中国光伏和电池制造全球产能占比 <strong>&gt;90%</strong>，远超 40% 门槛，<strong>极易触发审查</strong>。
+  </div>
+  <p style="margin-top:12px;">须满足以下 6 项中的<strong>至少 4 项</strong>（<span style="color:var(--danger)">第(e)项强制</span>）：</p>
+  <div class="table-wrap">
+  <table>
+    <tr><th>条件</th><th>要求</th></tr>
+    <tr><td>(a)</td><td>外资持股/表决权 ≤ 49%</td></tr>
+    <tr><td>(b)</td><td>须与欧盟企业合资，外资持股 ≤ 49%，欧盟方实质参与管理</td></tr>
+    <tr><td>(c)</td><td><strong style="color:var(--danger)">强制向欧盟主体授权核心知识产权</strong>，投资前独立开发的IP归欧盟实体独占</td></tr>
+    <tr><td>(d)</td><td>每年在欧研发支出 ≥ 目标企业年营收的 1%</td></tr>
+    <tr><td>(e) 🔒</td><td><strong style="color:var(--danger)">欧盟员工占比 ≥ 50%（强制，覆盖所有岗位）</strong></td></tr>
+    <tr><td>(f)</td><td>至少 30% 的生产投入来自欧盟供应链</td></tr>
+  </table>
+  </div>
+
+  <h3>豁免条款</h3>
+  <ul>
+    <li>成本差异 <strong>&gt;25%</strong> 可申请豁免原产地要求</li>
+    <li>项目交付延误 <strong>&gt;7个月</strong> 可豁免</li>
+    <li>在建/已获许可项目不追溯</li>
+    <li>在 FTA 缔约国（韩国、英国、土耳其等）或 GPA 缔约国设厂，产品<strong>视同欧盟原产</strong></li>
+  </ul>
+
+  <h3>公共采购（2029年1月1日起）</h3>
+  <div class="callout danger">
+    中国<strong>不在</strong> WTO《政府采购协定》(GPA) 中，<strong>无</strong>欧盟 FTA → 中国企业所有或控制的企业被<strong>系统性地排除</strong>在欧盟特定领域公共采购之外。
+  </div>
+</section>
+
+<!-- ── 4. Battery Regulation ── -->
+<section class="section-card" id="s-battery" data-keywords="电池法规 2023/1542 碳足迹 数字护照 电池护照 供应链 尽职调查 再生含量 PEF 绿证 技术出口管制">
+  <h2><span class="dot" style="background:var(--battery)"></span>欧盟电池法规 (EU 2023/1542)</h2>
+  <p class="subtitle">2023年8月17日生效 · 分阶段至2028年全面执行</p>
+
+  <h3>实施时间表</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>日期</th><th>要求</th><th>涉及产品</th></tr>
+    <tr><td>2025年2月18日</td><td>碳足迹<strong>声明</strong>强制</td><td>电动车电池</td></tr>
+    <tr><td>2025年8月18日</td><td>旧电池指令废止</td><td>所有电池</td></tr>
+    <tr><td>2026年2月18日</td><td>碳足迹<strong>性能等级标签</strong></td><td>工业电池 (&gt;2kWh)</td></tr>
+    <tr><td>2026年8月18日</td><td>碳足迹等级标签 + QR码</td><td>电动车电池</td></tr>
+    <tr><td>2027年2月18日</td><td><strong>数字电池护照</strong>强制</td><td>EV、LMT、工业电池 (&gt;2kWh)</td></tr>
+    <tr><td>2027年8月18日</td><td>供应链尽职调查（延后两年）</td><td>年营收 &gt;1.5亿欧元</td></tr>
+    <tr><td>2028年2月18日</td><td><strong>最大碳阈值——超标禁售</strong></td><td>电动车电池</td></tr>
+  </table>
+  </div>
+
+  <h3>碳足迹：三阶段递进</h3>
+  <ol>
+    <li><strong>声明阶段</strong>：按欧盟 PEF 方法学生命周期排放核算</li>
+    <li><strong>等级标签阶段</strong>：A–E 等级标签</li>
+    <li><strong>最大阈值阶段</strong>：超标产品被<strong>禁售</strong></li>
+  </ol>
+
+  <div class="callout danger">
+    <strong>⚠️ 关键挑战</strong>：欧盟<strong>不认可</strong>中国绿证 (GEC)。要计入绿电，须证明<strong>额外性</strong>（购电直接推动新增新能源装机）和<strong>时空匹配</strong>（小时级、同电网区域）。否则只能用中国高电网排放因子，可能超 2028 禁售阈值。
+  </div>
+
+  <h3>数字电池护照</h3>
+  <ul>
+    <li>2027年2月18日起强制，QR码链接</li>
+    <li>含 <strong>64+</strong> 强制数据字段（化学成分、碳足迹、再生含量、供应链报告等）</li>
+    <li>三级数据访问：公开（消费者）→ 限制（回收商）→ 机密（监管机构）</li>
+    <li>⚠️ 护照披露可能触发中国<strong>技术出口管制</strong>（2025年商务部锂电池技术出口限制）</li>
+    <li>违者罚款：最高 <strong>全球年营收的 4%</strong></li>
+  </ul>
+
+  <h3>再生含量要求（2031年起）</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>钴</th><th>锂</th><th>镍</th><th>铅</th></tr>
+    <tr><td>16%</td><td>6%</td><td>6%</td><td>85%</td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- ── 5. FSR ── -->
+<section class="section-card" id="s-fsr" data-keywords="FSR 外国补贴 反补贴 调查 黎明突袭 罗马尼亚 隆基 上海电气 CRRC 中车 同方威视 Temu 贸易投资壁垒">
+  <h2><span class="dot" style="background:var(--fsr)"></span>外国补贴条例 (FSR)</h2>
+  <p class="subtitle">Foreign Subsidies Regulation · 2023年7月12日生效</p>
+  <p>门槛：公共采购合同 &gt;2.5亿欧元 + 近三年获 ≥400万欧元外国财政补贴</p>
+
+  <h3>2024–2025 关键调查记录</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>时间</th><th>事件</th><th>结果</th></tr>
+    <tr><td>2024年2月</td><td>保加利亚列车采购（CRRC中车）</td><td>中企退出，调查终止</td></tr>
+    <tr><td>2024年4月3日</td><td>罗马尼亚 110MW 太阳能园区（隆基 + 上海电气）</td><td>两家联合体退出</td></tr>
+    <tr><td>2024年4月</td><td>中国风电供应商（西班牙、希腊、法国、罗马尼亚、保加利亚）</td><td>黎明突袭 (Dawn Raids)</td></tr>
+    <tr><td>2024年4月</td><td>同方威视（荷兰、波兰办公室）</td><td>扣押电子设备和手机</td></tr>
+    <tr><td>2025年12月</td><td>Temu 都柏林办公室</td><td>黎明突袭</td></tr>
+  </table>
+  </div>
+
+  <div class="callout danger">
+    <strong>⚠️ 事实上的歧视</strong>：2024年三起深入调查<strong>全部</strong>针对中国企业。中国商务部调查结论（2025年1月）：FSR 做法<strong>构成贸易投资壁垒</strong>，中国企业直接间接损失约 <strong>¥156亿元（€20亿+）</strong>。<br>
+    "补贴"定义宽泛——CRRC 所有政府采购合同被计为"财政资助"共 €75亿；保加利亚案仅给 <strong>3天</strong> 回复期限。
+  </div>
+</section>
+
+<!-- ── 6. CBAM ── -->
+<section class="section-card" id="s-cbam" data-keywords="CBAM 碳边境 碳关税 碳价 碳足迹认证 ESMC 光伏组件 铝边框 钢支架 法国 认证 PEF">
+  <h2><span class="dot" style="background:var(--cbam)"></span>碳边境调节机制 (CBAM)</h2>
+  <p class="subtitle">Carbon Border Adjustment Mechanism · 2026年1月1日正式收费</p>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th>阶段</th><th>时间</th><th>内容</th></tr>
+    <tr><td>过渡期</td><td>2023.10 – 2025.12</td><td>仅申报排放数据，不收费</td></tr>
+    <tr><td>正式收费</td><td>2026.1.1 起</td><td>按 EU ETS 碳价购买 CBAM 证书</td></tr>
+    <tr><td>免费配额取消</td><td>渐进至 2034</td><td>2034 年后 100% 由 CBAM 证书覆盖</td></tr>
+    <tr><td>扩围计划</td><td>拟 2028</td><td>覆盖钢铁/铝密集型下游产品 ~180 种</td></tr>
+  </table>
+  </div>
+
+  <h3>对中国光伏的影响</h3>
+  <ul>
+    <li>光伏组件本身不直接纳入 CBAM，但<strong>铝边框、钢支架、玻璃</strong>等原材料在 CBAM 覆盖范围</li>
+    <li>每 GW 光伏组件碳关税成本：<strong>600–1000 万元人民币</strong>（碳价 €80/吨）</li>
+    <li>年出口欧盟 10GW 企业：碳关税 <strong>6000万–1亿元</strong></li>
+    <li>法国碳足迹认证已成"绿色通行证"，中小企业被拒门外</li>
+  </ul>
+
+  <h3>对中国电池的影响</h3>
+  <ul>
+    <li>储能集装箱、逆变器机柜等含钢铝产品，预计 CBAM 扩围后纳入</li>
+    <li>2025年中国储能海外订单 366GWh（+144% YoY），欧洲排第一</li>
+    <li>2026年 CBAM 正式收费后出口成本显著上升</li>
+  </ul>
+
+  <div class="callout info">
+    <strong>📌 ESMC 推动 CBAM 扩至光伏下游</strong>（2025年9月）：欧洲太阳能制造委员会要求将<strong>光伏组件、支架、跟踪器</strong>纳入 CBAM。当前中国成品组件<strong>碳成本为零</strong>，而欧盟制造商须为进口钢铝购买 CBAM 证书 (~€72–76/吨)。
+  </div>
+</section>
+
+<!-- ── 7. CRMA ── -->
+<section class="section-card" id="s-crma" data-keywords="CRMA 关键原材料 稀土 锂 去中国化 RESourceEU 资源EU 储备 开采 加工 回收 出口限制">
+  <h2><span class="dot" style="background:var(--crma)"></span>关键原材料法案 (CRMA) 与 RESourceEU</h2>
+  <p class="subtitle">Critical Raw Materials Act · 2024年4月通过 (Regulation (EU) 2024/1252)</p>
+
+  <h3>2030年目标</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>指标</th><th>目标</th></tr>
+    <tr><td>本土开采</td><td>10%</td></tr>
+    <tr><td>本土加工</td><td>40%</td></tr>
+    <tr><td>本土回收</td><td>15%</td></tr>
+    <tr><td>单一国家依赖上限</td><td>≤ 65%</td></tr>
+  </table>
+  </div>
+
+  <h4>中欧博弈时间线</h4>
+  <ul>
+    <li><strong>2025.4.4</strong> 中国限制 7 种稀土出口（钐、钆、铽、镝、镥、钪、钇）</li>
+    <li><strong>2025.11.8</strong> 中国扩大限制至锂电池、正负极材料和关键制造设备</li>
+    <li><strong>2025.12.3</strong> 欧盟推出 RESourceEU 行动计划：动员 <strong>€30亿</strong>，2029年前将单一依赖削减 <strong>30–50%</strong>，限制黑粉/磁铁废料出口，2026年起<strong>关键矿产储备</strong></li>
+  </ul>
+
+  <h3>关键数据</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>指标</th><th>中国占比</th></tr>
+    <tr><td>稀土精炼</td><td><strong>&gt;90%</strong></td></tr>
+    <tr><td>稀土开采</td><td><strong>~70%</strong></td></tr>
+    <tr><td>关键矿产加工</td><td><strong>81%</strong></td></tr>
+    <tr><td>电池组件生产</td><td><strong>60%</strong></td></tr>
+    <tr><td>欧盟风电永磁体来源</td><td><strong>93%</strong></td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- ── 8. Tariff ── -->
+<section class="section-card" id="s-tariff" data-keywords="光伏 关税 组件 临时关税 2025 反倾销 德国 成本 出口">
+  <h2><span class="dot" style="background:var(--tariff)"></span>光伏临时关税</h2>
+  <p class="subtitle">2025年6月23日零时起实施</p>
+  <ul>
+    <li>对<strong>原产于中国的光伏组件</strong>实施临时关税</li>
+    <li>欧盟产组件比中国贵 <strong>35–40%</strong></li>
+    <li>德国测算：全部用本地组件，光伏发电成本从 €0.06/kWh 升至 €0.09/kWh，2030年目标额外成本 <strong>€240亿</strong></li>
+    <li>2024年欧盟占中国组件出口 <strong>23%</strong> (~65GW)</li>
+    <li>临时关税可能导致 2025 年中国对欧出口下降 <strong>15–20%</strong></li>
+  </ul>
+</section>
+
+<!-- ── 9. PCS ── -->
+<section class="section-card" id="s-pcs" data-keywords="PCS 储能变流器 逆变器 公共资金 融资 EIB EIF 国家安全 供应链自主">
+  <h2><span class="dot" style="background:var(--pcs)"></span>储能PCS公共资金限制</h2>
+  <p class="subtitle">2026年5月 · "国家安全"和"供应链自主"</p>
+  <ul>
+    <li>欧盟将对"高风险国家"逆变器公共资金限制从光伏、风电<strong>扩展至储能PCS（储能变流器）</strong></li>
+    <li>欧洲投资银行 (EIB)、欧洲投资基金 (EIF) 等核心融资渠道<strong>不得为使用中国 PCS 的项目提供资金</strong></li>
+    <li>实际效果：欧盟公共融资项目<strong>直接排除中国 PCS 产品</strong></li>
+    <li>受影响规模：中国 2025 年海外储能订单欧洲第一约 <strong>61.82 GWh</strong></li>
+  </ul>
+</section>
+
+<!-- ── 10. Impact ── -->
+<section class="section-card" id="s-impact" data-keywords="影响 评估 量化 企业 宁德时代 CATL 比亚迪 BYD 亿纬锂能 国轩高科 中航锂电 隆基 Northvolt 匈牙利 风险">
+  <h2><span class="dot" style="background:var(--text2)"></span>中国企业影响评估</h2>
+
+  <h3>量化影响估算</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>指标</th><th>数据</th></tr>
+    <tr><td>光伏组件碳关税成本</td><td>600–1000 万元/GW（€80/t碳价）</td></tr>
+    <tr><td>海外新能源项目 IRR 下降</td><td>2–5 个百分点</td></tr>
+    <tr><td>PCS 公共资金项目直接损失</td><td>约 61.82 GWh 订单面临排除风险</td></tr>
+    <tr><td>FSR 调查中国企业损失</td><td>¥156 亿元（€20亿+）</td></tr>
+    <tr><td>光伏对欧出口预测下降</td><td>15–20%（2025年）</td></tr>
+  </table>
+  </div>
+
+  <h3>头部企业欧洲布局现状</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>企业</th><th>欧洲基地</th><th>产能</th><th>状态</th></tr>
+    <tr><td><strong>宁德时代 (CATL)</strong></td><td>匈牙利德布勒森 + 西班牙 (JV Stellantis)</td><td>100 + 50 GWh</td><td>一期2025底投产，二期暂停</td></tr>
+    <tr><td><strong>比亚迪 (BYD)</strong></td><td>匈牙利塞格德（整车）+ 电池厂评估中</td><td>50万辆/年</td><td>整车2025底完工，电池未决策</td></tr>
+    <tr><td><strong>亿纬锂能 (EVE)</strong></td><td>匈牙利德布勒森</td><td>28 GWh</td><td>目标 2026/2027</td></tr>
+    <tr><td><strong>国轩高科 (Gotion)</strong></td><td>德国哥廷根 + 斯洛伐克</td><td>~20 GWh</td><td>运营中</td></tr>
+    <tr><td><strong>中航锂电 (CALB)</strong></td><td>葡萄牙锡尼什</td><td>15 GWh</td><td>~€20亿投资，目标2027/2028</td></tr>
+    <tr><td><strong>隆基绿能</strong></td><td>德国</td><td>—</td><td>已获法国碳足迹认证</td></tr>
+  </table>
+  </div>
+
+  <h3>七大关键风险</h3>
+  <ol>
+    <li><strong>电芯+BMS原产地要求（IAA）</strong>：3年后须欧盟原产，须在欧建电芯厂</li>
+    <li><strong>强制技术转让</strong>：IAA 第(c)条要求核心 IP 授权欧盟实体</li>
+    <li><strong>49% 持股上限</strong>：外商投资审查强制条件</li>
+    <li><strong>碳足迹认证壁垒</strong>：中国绿证不被认可</li>
+    <li><strong>PCS 公共融资排除</strong>：中国 PCS 在欧盟公共项目直接出局</li>
+    <li><strong>数据本地化</strong>：BMS 运行数据须存 EEA</li>
+    <li><strong>中国出口管制反制</strong>：锂电池技术出口受限</li>
+  </ol>
+
+  <h3>欧洲电动车需求放缓的连锁影响</h3>
+  <ul>
+    <li>匈牙利电池产量 2024年12月同比 <strong>-51%</strong></li>
+    <li>三星 SDI 匈牙利工厂裁员并暂时关闭</li>
+    <li><strong>Northvolt 破产</strong>（2025年3月）：欧洲"电池冠军"倒下</li>
+    <li>欧洲电网大停电（2025年4月，~6000万人受影响）→ 反而凸显中国储能技术需求</li>
+  </ul>
+</section>
+
+<!-- ── 11. Strategy ── -->
+<section class="section-card" id="s-strategy" data-keywords="应对策略 本地化 碳合规 技术授权 市场多元化 合规前置 匈牙利 FTA GPA 一带一路 PPA PEF 区块链">
+  <h2><span class="dot" style="background:var(--green)"></span>中国企业应对策略</h2>
+
+  <h3>策略一：本地化深度布局 🏭</h3>
+  <ul>
+    <li>匈牙利/东欧建厂，本地化率 30–50%+，逐步提升至满足 IAA 要求</li>
+    <li>利用 IAA 豁免：成本差异 &gt;25% 可申请豁免</li>
+    <li>FTA/GPA 缔约国设厂（韩国、英国、土耳其等）→ 产品视同欧盟原产</li>
+  </ul>
+
+  <h3>策略二：碳足迹合规 🌱</h3>
+  <ul>
+    <li>立即按欧盟 <strong>PEF 方法论</strong>（非中国国内标准）收集碳足迹数据</li>
+    <li>重构电力采购：优先实体 PPA 或直接可再生能源</li>
+    <li>区块链溯源系统（如 Catena-X 兼容）</li>
+    <li>预约欧盟认可的合格评定机构 (CAB) 预审</li>
+  </ul>
+
+  <h3>策略三：技术授权 + 运营主导权 🔑</h3>
+  <ul>
+    <li>以财务投资人角色参与，保留关键运营主导权</li>
+    <li>合资架构：持股 ≤49% 但通过协议保留上游采购和技术迭代主导权</li>
+    <li>核心技术分类管理，严格限制前沿技术授权</li>
+  </ul>
+
+  <h3>策略四：市场多元化 🌍</h3>
+  <ul>
+    <li>重点拓展东南亚、中东、拉美、非洲、中亚市场</li>
+    <li>利用"一带一路"产能合作规避壁垒</li>
+  </ul>
+
+  <h3>策略五：合规前置 📋</h3>
+  <ul>
+    <li>建立全维度风险预警机制（地缘、价格、产能、交付、库存）</li>
+    <li>协议加入法律稳定性条款、不可抗力条款、补偿及退出机制</li>
+    <li>合同修订：供应商 ESG 合规条款及违约责任</li>
+  </ul>
+</section>
+
+<!-- ── 12. Timeline ── -->
+<section class="section-card" id="s-timeline" data-keywords="时间线 关键节点 2023 2024 2025 2026 2027 2028 2029 2030 时间轴">
+  <h2><span class="dot" style="background:var(--accent)"></span>关键时间线</h2>
+  <div class="timeline">
+    <div class="tl-year">2023</div>
+    <div class="tl-item"><strong>Jul</strong> — FSR 生效</div>
+    <div class="tl-item"><strong>Aug</strong> — 电池法规生效</div>
+    <div class="tl-item"><strong>Oct</strong> — CBAM 过渡期开始</div>
+
+    <div class="tl-year">2024</div>
+    <div class="tl-item"><strong>Feb</strong> — 首个 FSR 调查（CRRC 保加利亚）</div>
+    <div class="tl-item"><strong>Apr</strong> — NZIA 通过 / CRMA 通过 / 罗马尼亚光伏 FSR 调查</div>
+    <div class="tl-item"><strong>May</strong> — 罗马尼亚案双方退出</div>
+
+    <div class="tl-year">2025</div>
+    <div class="tl-item"><strong>Feb</strong> — 电动车电池碳足迹声明强制</div>
+    <div class="tl-item"><strong>Apr</strong> — 中国稀土出口限制（7种 REE）</div>
+    <div class="tl-item"><strong>May</strong> — NZIA 次级立法：非价格标准 + 中国依赖限制</div>
+    <div class="tl-item"><strong>Jun</strong> — 光伏临时关税生效</div>
+    <div class="tl-item"><strong>Jul</strong> — NZIA 全面实施</div>
+    <div class="tl-item"><strong>Sep</strong> — ESMC 提议 CBAM 扩至光伏</div>
+    <div class="tl-item"><strong>Nov</strong> — 中国限制锂电池材料出口</div>
+    <div class="tl-item"><strong>Dec</strong> — NZIA 非价格标准生效（30%拍卖）/ RESourceEU 发布 / Temu FSR 调查</div>
+
+    <div class="tl-year">2026</div>
+    <div class="tl-item"><strong>Jan</strong> — CBAM 正式收费 / FSR 指南发布</div>
+    <div class="tl-item"><strong>Feb</strong> — 工业电池碳足迹等级标签</div>
+    <div class="tl-item"><strong>Mar</strong> — <span style="color:var(--danger)">IAA 提案公布</span></div>
+    <div class="tl-item"><strong>May</strong> — PCS 公共资金限制扩展 / 中国锂电池技术出口限制</div>
+    <div class="tl-item"><strong>Aug</strong> — 电动车电池碳足迹等级标签 + QR码</div>
+
+    <div class="tl-year">2027</div>
+    <div class="tl-item"><strong>Feb</strong> — 数字电池护照强制</div>
+    <div class="tl-item"><strong>Mar</strong> — 成员国指定工业加速区</div>
+    <div class="tl-item"><strong>Aug</strong> — 供应链尽职调查强制</div>
+
+    <div class="tl-year">2028</div>
+    <div class="tl-item"><strong>Feb</strong> — 电动车电池最大碳阈值（超标禁售）</div>
+    <div class="tl-item"><strong>拟</strong> — CBAM 扩围至下游产品（~180种）</div>
+
+    <div class="tl-year">2029</div>
+    <div class="tl-item"><strong>Jan</strong> — IAA 公共采购原产地要求生效</div>
+
+    <div class="tl-year">2030+</div>
+    <div class="tl-item"><strong>2030</strong> — NZIA 40% 本土制造 / CRMA 开采10%加工40%回收15%</div>
+    <div class="tl-item"><strong>2031</strong> — 电池最低再生含量要求</div>
+    <div class="tl-item"><strong>2034</strong> — CBAM 免费配额完全取消</div>
+  </div>
+</section>
+
+<!-- ── 13. Sources ── -->
+<section class="section-card" id="s-sources" data-keywords="信息来源 官方 法规 行业研究 法律分析 媒体 引用">
+  <h2><span class="dot" style="background:var(--text2)"></span>信息来源</h2>
+  <div class="table-wrap">
+  <table>
+    <tr><th>来源</th><th>类型</th></tr>
+    <tr><td>EU Commission Implementing Regulation (EU) C(2025) 2900</td><td>官方法规</td></tr>
+    <tr><td>EU Commission Communication C(2025)9034</td><td>官方文件</td></tr>
+    <tr><td>EU Battery Regulation (EU) 2023/1542</td><td>官方法规</td></tr>
+    <tr><td>EU Critical Raw Materials Act Regulation (EU) 2024/1252</td><td>官方法规</td></tr>
+    <tr><td>Foreign Subsidies Regulation (FSR)</td><td>官方法规</td></tr>
+    <tr><td>Transport & Environment Position Paper (Nov 2025)</td><td>行业研究</td></tr>
+    <tr><td>Industrial Accelerator Act Proposal (Mar 2026)</td><td>法案提案</td></tr>
+    <tr><td>ESMC (European Solar Manufacturing Council)</td><td>行业协会</td></tr>
+    <tr><td>JLL / Rhodium Group / 荣鼎咨询</td><td>咨询报告</td></tr>
+    <tr><td>中国商务部贸易投资壁垒调查报告 (Jan 2025)</td><td>官方调查</td></tr>
+    <tr><td>贸法通 / 金杜律师事务所 / 大成律师事务所</td><td>法律分析</td></tr>
+    <tr><td>CleanTechnica / Batteries News / SolarQuarter</td><td>行业媒体</td></tr>
+    <tr><td>ACEA (European Automobile Manufacturers' Association)</td><td>行业协会</td></tr>
+    <tr><td>中国能源网 / 数字储能网</td><td>中国行业媒体</td></tr>
+  </table>
+  </div>
+</section>
+
+<!-- ── Conclusion ── -->
+<div class="conclusion-box">
+  <h3>🔑 核心结论</h3>
+  <p>2024–2026年是欧盟对中国储能+光伏企业政策壁垒从<strong>"标准合规"</strong>升级为<strong>"市场准入限制 + 原产地排除 + 强制技术转让"</strong>的关键转型期。NZIA + IAA + FSR + CBAM + 电池法规形成政策矩阵，中国企业面临<strong style="color:var(--danger)">"不入欧则失标，入欧则失技术"</strong>的两难。</p>
+  <p style="margin-top:8px;">头部企业（CATL、BYD等）通过匈牙利/西班牙建厂 + 本地化 + 碳合规 + 市场多元化组合应对，但 IAA 的<strong style="color:var(--danger)">"六选四" + 强制技术转让条款</strong>将是最大变量。</p>
+  <p style="margin-top:8px;font-weight:700;color:var(--warn);">⏰ 2027–2029年 IAA 逐步生效期是战略窗口期，建议在 2027 年前完成欧洲核心产能布局和碳合规体系建设。</p>
+</div>
+
+</main>
+
+<!-- ═══════════ SCRIPTS ═══════════ -->
+<script>
+// ── Sidebar toggle (mobile) ──
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+}
+function closeSidebarMobile() {
+  if (window.innerWidth <= 900) {
+    document.getElementById('sidebar').classList.remove('open');
+  }
+  // update active
+  setTimeout(updateActiveLink, 100);
+}
+
+// ── Sidebar active link on scroll ──
+function updateActiveLink() {
+  const links = document.querySelectorAll('.sidebar a');
+  const sections = [...document.querySelectorAll('.section-card')];
+  let activeId = null;
+  for (const s of sections) {
+    const rect = s.getBoundingClientRect();
+    if (rect.top <= 120) activeId = s.id;
+  }
+  links.forEach(a => {
+    a.classList.remove('active');
+    if (a.getAttribute('href') === '#' + activeId) a.classList.add('active');
+  });
+}
+window.addEventListener('scroll', updateActiveLink, {passive:true});
+
+// ── Search ──
+function doSearch() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const main = document.getElementById('mainContent');
+  const clearBtn = document.getElementById('clearBtn');
+  const resultsCount = document.getElementById('resultsCount');
+  const cards = document.querySelectorAll('.section-card');
+
+  if (!q) {
+    main.classList.remove('searching');
+    clearBtn.style.display = 'none';
+    resultsCount.style.display = 'none';
+    cards.forEach(c => c.classList.remove('match'));
+    return;
+  }
+
+  main.classList.add('searching');
+  clearBtn.style.display = 'block';
+  let matchCount = 0;
+
+  // search in keywords, headings, and text content
+  cards.forEach(card => {
+    const keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
+    const text = card.innerText.toLowerCase();
+    const match = keywords.includes(q) || text.includes(q);
+    if (match) { card.classList.add('match'); matchCount++; }
+    else card.classList.remove('match');
+  });
+
+  resultsCount.style.display = 'inline';
+  resultsCount.textContent = matchCount ? `找到 ${matchCount} 个章节` : '无匹配';
+}
+
+function clearSearch() {
+  document.getElementById('searchInput').value = '';
+  doSearch();
+  document.getElementById('searchInput').focus();
+}
+
+// ── Keyboard shortcut: Ctrl+K or / to focus search ──
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey && e.key === 'k') || (e.key === '/' && document.activeElement === document.body)) {
+    e.preventDefault();
+    document.getElementById('searchInput').focus();
+  }
+  if (e.key === 'Escape') {
+    clearSearch();
+  }
+});
+</script>
+
+</body>
+</html>
