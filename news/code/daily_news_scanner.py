@@ -565,7 +565,8 @@ CN_COMPANY_NAMES = {
     "英伟达": "NVIDIA", "辉达": "NVIDIA",
     "微软": "Microsoft",
     "甲骨文": "Oracle",
-    "帕兰提尔": "Palantir", "帕兰蒂尔": "Palantir",
+    "帕兰提尔": "Palantir", "帕兰蒂尔": "Palantir", "帕兰泰尔": "Palantir",
+    "帕拉提尔": "Palantir", "帕拉蒂尔": "Palantir",
     "特斯拉": "Tesla",
     "博通": "Broadcom",
     "超微": "Super Micro", "超微电脑": "Super Micro",
@@ -1036,7 +1037,7 @@ def generate_html_report(news_list: list[dict], weather: list[dict] = None, soup
   <div style="text-align:center;padding:15px 0;border-bottom:1px solid #30363d;margin-bottom:18px;">
     <h1 style="color:#58a6ff;margin:0;font-size:22px;">盘前简报</h1>
     <p style="color:#8b949e;margin:4px 0 0 0;font-size:13px;">
-      🇩🇪 {de_now.strftime('%Y-%m-%d %H:%M')} CEST | 北京时间 {bj_now.strftime('%Y-%m-%d %H:%M')} | 美东 {et_now.strftime('%Y-%m-%d %H:%M')} EDT | {market_badge}
+      德国时间 {de_now.strftime('%Y-%m-%d %H:%M')} | 北京时间 {bj_now.strftime('%Y-%m-%d %H:%M')} | 美东时间 {et_now.strftime('%Y-%m-%d %H:%M')} | {market_badge}
     </p>
   </div>
 
