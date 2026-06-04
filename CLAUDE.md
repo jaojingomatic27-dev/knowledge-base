@@ -23,7 +23,7 @@
 | 项目 | 说明 |
 |------|------|
 | `stock/` | 量化回测系统，GitHub: https://github.com/jaojingomatic27-dev/stock |
-| `news/` | 每日盘前新闻扫描 + 情感分析 + 邮件简报 |
+| `news/` | 每日盘前新闻扫描 + 情感分析 + 邮件简报，GitHub: https://github.com/jaojingomatic27-dev/news |
 | `mail/` | Gmail 清理/管理脚本 |
 
 ## PowerShell 速记
