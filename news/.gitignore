@@ -1,6 +1,0 @@
-# 敏感信息（全局 .gitignore 已覆盖，此处冗余确保）
-account.txt
-
-# 生成数据（每日变化，不提交）
-data/*.json
-data/*.html

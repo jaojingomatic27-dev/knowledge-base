@@ -5,6 +5,9 @@ account.txt
 # stock 子项目有独立仓库
 stock/
 
+# news 子项目有独立仓库
+news/
+
 # Python
 __pycache__/
 *.py[cod]
