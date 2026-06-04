@@ -411,6 +411,67 @@ def fetch_google_news_rss(ticker: str) -> list[dict]:
     return results
 
 
+def fetch_reuters_news(ticker: str) -> list[dict]:
+    """通过 Google News RSS 搜索 Reuters 来源新闻"""
+    if feedparser is None:
+        return []
+
+    company = COMPANY_NAMES.get(ticker, ticker)
+    query = f"{company} {ticker} site:reuters.com"
+    rss_url = (
+        f"https://news.google.com/rss/search?"
+        f"q={query.replace(' ', '%20')}&hl=en-US&gl=US&ceid=US:en"
+    )
+
+    try:
+        feed = feedparser.parse(rss_url)
+    except Exception as e:
+        print(f"  [WARN] Reuters RSS failed for {ticker}: {e}")
+        return []
+
+    if feed.get("bozo", 0) and not feed.entries:
+        return []
+
+    results = []
+    cutoff = datetime.now(timezone.utc) - timedelta(hours=24)
+
+    for entry in feed.entries:
+        try:
+            title = entry.get("title", "")
+            link = entry.get("link", "")
+            published_parsed = entry.get("published_parsed")
+            if published_parsed:
+                pub_date = datetime(*published_parsed[:6], tzinfo=timezone.utc)
+            else:
+                pub_date = datetime.now(timezone.utc)
+
+            if pub_date < cutoff:
+                continue
+            if not title:
+                continue
+
+            title = re.sub(r'<[^>]+>', '', title)
+            # 提取真正来源 (Google News 格式: "标题 - Reuters")
+            source_name = "Reuters"
+            source_title = entry.get("source", {}).get("title", "")
+            if "reuters" in source_title.lower():
+                source_name = "Reuters"
+
+            results.append({
+                "ticker": ticker,
+                "title": title.replace(" - Reuters", "").replace(" - Reuters.com", ""),
+                "summary": "",
+                "url": link,
+                "provider": source_name,
+                "pub_date": pub_date,
+                "source": "Reuters",
+            })
+        except Exception:
+            continue
+
+    return results
+
+
 def fetch_all_news() -> list[dict]:
     """获取所有 ticker 的新闻并去重"""
     all_news = []
@@ -419,12 +480,13 @@ def fetch_all_news() -> list[dict]:
     for ticker in ALL_TICKERS:
         print(f"  搜索 {ticker} ({COMPANY_NAMES.get(ticker, '')})...")
 
-        # 并行获取两个来源
+        # 三源获取
         yf_news = fetch_yfinance_news(ticker)
         rss_news = fetch_google_news_rss(ticker)
+        reuters_news = fetch_reuters_news(ticker)
 
-        combined = yf_news + rss_news
-        print(f"    共 {len(combined)} 条 (yfinance: {len(yf_news)}, RSS: {len(rss_news)})")
+        combined = yf_news + rss_news + reuters_news
+        print(f"    共 {len(combined)} 条 (yfinance: {len(yf_news)}, RSS: {len(rss_news)}, Reuters: {len(reuters_news)})")
 
         for item in combined:
             # 用 URL 去重，无 URL 则用标题 hash
@@ -837,6 +899,30 @@ def generate_html_report(news_list: list[dict], weather: list[dict] = None, soup
     data = generate_briefing(news_list)
     bf = data["briefing"]
 
+    # ── 天气翻译映射 ──
+    WEATHER_CN = {
+        "Sunny": "晴", "Clear": "晴",
+        "Partly cloudy": "多云", "Partly Cloudy": "多云", "Cloudy": "阴", "Overcast": "阴",
+        "Mist": "薄雾", "Fog": "雾", "Freezing fog": "冻雾",
+        "Light drizzle": "毛毛雨", "Drizzle": "毛毛雨",
+        "Light rain": "小雨", "Moderate rain": "中雨", "Heavy rain": "大雨",
+        "Light rain shower": "阵雨", "Moderate or heavy rain shower": "大阵雨",
+        "Heavy Rain Shower": "大阵雨", "Torrential rain shower": "暴雨",
+        "Light sleet": "雨夹雪", "Sleet": "雨夹雪",
+        "Light snow": "小雪", "Moderate snow": "中雪", "Heavy snow": "大雪",
+        "Patchy rain possible": "局地雨", "Patchy rain nearby": "局地雨",
+        "Thunderstorm": "雷暴", "Heavy Rain With Thunderstorm": "雷暴雨",
+        "Light snow showers": "阵雪",
+        "Blizzard": "暴风雪",
+        "Blowing snow": "吹雪",
+    }
+
+    def _weather_cn(desc: str) -> str:
+        for en, cn in WEATHER_CN.items():
+            if en.lower() in desc.lower():
+                return cn
+        return desc
+
     # ── 天气行 ──
     weather_html = ""
     if weather:
@@ -844,14 +930,15 @@ def generate_html_report(news_list: list[dict], weather: list[dict] = None, soup
         for w in weather:
             icon_map = {"113": "☀️", "116": "⛅", "119": "☁️", "122": "☁️", "176": "🌦️", "179": "🌧️", "200": "⛈️"}
             icon = icon_map.get(str(w.get("weather_code", "")), "🌡️")
+            desc_cn = _weather_cn(w.get("weather_desc", ""))
             weather_parts.append(
-                f'{icon} {w["city"]} {w["temp_c"]}°C {w["weather_desc"]}'
+                f'{icon} {w["city"]} {w["temp_c"]}°C {desc_cn}'
             )
         weather_line = "  ·  ".join(weather_parts)
         soup_line = f'<div style="color:#c0a060;font-size:12px;margin-top:4px;font-style:italic;">{soup}</div>' if soup else ""
         weather_html = f"""
         <div style="background:#1a1f2e;border-radius:8px;padding:10px 16px;margin-bottom:14px;text-align:center;">
-          <div style="color:#a0b0c0;font-size:13px;">🇩🇪 德国时间 {de_now.strftime('%Y-%m-%d %H:%M')} CEST  ·  {weather_line}</div>
+          <div style="color:#a0b0c0;font-size:13px;">{weather_line}</div>
           {soup_line}
         </div>"""
 
@@ -866,6 +953,7 @@ def generate_html_report(news_list: list[dict], weather: list[dict] = None, soup
     else:
         market_mood = "整体需谨慎"
         market_color = "#f44336"
+    market_badge = f'<span style="background:{market_color}22;color:{market_color};padding:2px 10px;border-radius:10px;font-weight:bold;">{market_mood}</span>'
 
     # ── 渲染单个持仓组合卡片 ──
     def render_briefing_card(pf_name: str, b: dict) -> str:
@@ -948,7 +1036,7 @@ def generate_html_report(news_list: list[dict], weather: list[dict] = None, soup
   <div style="text-align:center;padding:15px 0;border-bottom:1px solid #30363d;margin-bottom:18px;">
     <h1 style="color:#58a6ff;margin:0;font-size:22px;">盘前简报</h1>
     <p style="color:#8b949e;margin:4px 0 0 0;font-size:13px;">
-      北京时间 {bj_now.strftime('%Y-%m-%d %H:%M')} | 美东 {et_now.strftime('%Y-%m-%d %H:%M')} EDT | {market_mood}
+      🇩🇪 {de_now.strftime('%Y-%m-%d %H:%M')} CEST | 北京时间 {bj_now.strftime('%Y-%m-%d %H:%M')} | 美东 {et_now.strftime('%Y-%m-%d %H:%M')} EDT | {market_badge}
     </p>
   </div>
 
