@@ -51,6 +51,13 @@ except ImportError:
     feedparser = None
     print("[WARN] feedparser not installed; RSS search disabled")
 
+try:
+    from deep_translator import GoogleTranslator
+    TRANSLATOR = GoogleTranslator(source='en', target='zh-CN')
+except ImportError:
+    TRANSLATOR = None
+    print("[WARN] deep-translator not installed; translation disabled")
+
 # ── 路径配置 ──────────────────────────────────────────────────
 PROJECT_ROOT = Path(r"C:\AI\cc\news")
 # 确保工作目录正确（Task Scheduler 环境下必要）
@@ -433,8 +440,172 @@ def fetch_all_news() -> list[dict]:
 
     # 按情感分数排序（利空在前，利多在后 — 关注风险优先）
     all_news.sort(key=lambda x: x["sentiment"]["score"])
+
+    # 批量翻译标题
+    print(f"\n  正在翻译 {len(all_news)} 条标题...")
+    batch_translate(all_news)
+
     return all_news
 
+
+# ═══════════════════════════════════════════════════════════════
+#  翻译 + 公司名高亮
+# ═══════════════════════════════════════════════════════════════
+
+# 翻译缓存（避免重复翻译相同标题）
+_translation_cache: dict = {}
+TRANSLATION_CACHE_FILE = DATA_DIR / "translation_cache.json"
+
+def _load_translation_cache():
+    """从磁盘加载翻译缓存"""
+    global _translation_cache
+    if TRANSLATION_CACHE_FILE.exists():
+        try:
+            _translation_cache = json.loads(TRANSLATION_CACHE_FILE.read_text(encoding="utf-8"))
+        except Exception:
+            _translation_cache = {}
+
+def _save_translation_cache():
+    """保存翻译缓存到磁盘"""
+    try:
+        TRANSLATION_CACHE_FILE.write_text(
+            json.dumps(_translation_cache, ensure_ascii=False, indent=2),
+            encoding="utf-8"
+        )
+    except Exception:
+        pass
+
+# 公司名 → 高亮颜色映射
+COMPANY_HIGHLIGHT_MAP = {
+    "NVIDIA": "NVIDIA",
+    "Nvidia": "NVIDIA",
+    "nvidia": "NVIDIA",
+    "Microsoft": "Microsoft",
+    "microsoft": "Microsoft",
+    "Oracle": "Oracle",
+    "oracle": "Oracle",
+    "Palantir": "Palantir",
+    "palantir": "Palantir",
+    "Tesla": "Tesla",
+    "tesla": "Tesla",
+    "Broadcom": "Broadcom",
+    "broadcom": "Broadcom",
+    "Super Micro": "Super Micro",
+    "Supermicro": "Super Micro",
+    "super micro": "Super Micro",
+    "Elon Musk": "Tesla",
+    "Jensen Huang": "NVIDIA",
+    "S&P 500": "SPY",
+    "SPDR": "SPY",
+    "ETF": "",
+}
+
+# 中文公司名 → 英文 tag 映射（用于中文翻译文本高亮）
+CN_COMPANY_NAMES = {
+    "英伟达": "NVIDIA",
+    "Nvidia": "NVIDIA",
+    "微软": "Microsoft",
+    "甲骨文": "Oracle",
+    "帕兰提尔": "Palantir",
+    "特斯拉": "Tesla",
+    "博通": "Broadcom",
+    "超微": "Super Micro",
+    "超微电脑": "Super Micro",
+    "标普": "SPY",
+}
+
+COMPANY_HIGHLIGHT_COLORS = {
+    "NVIDIA":    ("#76b900", "#1a2e0a"),
+    "Microsoft": ("#00a4ef", "#0a1a2e"),
+    "Oracle":    ("#f80000", "#2e0a0a"),
+    "Palantir":  ("#c0c0c0", "#1a1a1a"),
+    "Tesla":     ("#e82127", "#2e0a0a"),
+    "Broadcom":  ("#cc0000", "#2e0a0a"),
+    "Super Micro":("#1e90ff", "#0a1a2e"),
+    "SPY":       ("#ff9800", "#2e1a0a"),
+}
+
+def translate_title(title: str) -> str:
+    """翻译英文标题为中文（带缓存 + 重试）"""
+    if TRANSLATOR is None:
+        return ""
+    if title in _translation_cache:
+        return _translation_cache[title]
+    text = title[:150]
+    for attempt in range(2):
+        try:
+            result = TRANSLATOR.translate(text)
+            if result and result != text:  # 确保翻译成功且不同于原文
+                _translation_cache[title] = result
+                return result
+        except Exception:
+            pass
+        time.sleep(0.3)  # 重试前等待
+    # 两次都失败，缓存空字符串避免重复尝试
+    _translation_cache[title] = ""
+    return ""
+
+def highlight_companies(text: str) -> str:
+    """在文本中高亮公司名（HTML span 标签，中英文均支持）"""
+    result = text
+
+    # 1. 英文公司名高亮
+    en_names = sorted(COMPANY_HIGHLIGHT_MAP.keys(), key=len, reverse=True)
+    for name in en_names:
+        tag = COMPANY_HIGHLIGHT_MAP[name]
+        if not tag:
+            continue
+        colors = COMPANY_HIGHLIGHT_COLORS.get(tag)
+        if not colors:
+            continue
+        color, bg = colors
+        replacement = f'<span style="color:{color};font-weight:600;">{name}</span>'
+        result = result.replace(name, replacement)
+
+    # 2. 中文公司名高亮
+    cn_names = sorted(CN_COMPANY_NAMES.keys(), key=len, reverse=True)
+    for cn_name in cn_names:
+        tag = CN_COMPANY_NAMES[cn_name]
+        colors = COMPANY_HIGHLIGHT_COLORS.get(tag)
+        if not colors:
+            continue
+        color, bg = colors
+        replacement = f'<span style="color:{color};font-weight:600;">{cn_name}</span>'
+        result = result.replace(cn_name, replacement)
+
+    return result
+
+def batch_translate(news_list: list[dict]) -> None:
+    """批量翻译新闻标题（修改传入的 news_list）"""
+    if TRANSLATOR is None:
+        for item in news_list:
+            item["title_cn"] = ""
+        return
+
+    # 加载磁盘缓存
+    _load_translation_cache()
+
+    total = len(news_list)
+    success_count = 0
+    new_translations = 0
+    for i, item in enumerate(news_list):
+        title = item["title"]
+        was_cached = title in _translation_cache
+        cn = translate_title(title)
+        item["title_cn"] = cn
+        if cn:
+            success_count += 1
+            if not was_cached:
+                new_translations += 1
+        # 限速：每 5 条暂停 0.5 秒，避免触发 Google 反爬
+        if (i + 1) % 5 == 0:
+            time.sleep(0.5)
+        if (i + 1) % 20 == 0:
+            print(f"    翻译进度: {i+1}/{total} (成功: {success_count}, 新增: {new_translations})")
+
+    # 保存磁盘缓存
+    _save_translation_cache()
+    print(f"    翻译完成: {total} 条, 成功: {success_count}, 新增翻译: {new_translations}, 缓存总量: {len(_translation_cache)} 条")
 
 # ═══════════════════════════════════════════════════════════════
 #  报告生成 — Report Generation (简报风格)
@@ -626,12 +797,29 @@ def generate_html_report(news_list: list[dict]) -> str:
                 s = h["sentiment"]
                 sc = "#4caf50" if s["score"] > 0 else ("#f44336" if s["score"] < 0 else "#888")
                 url = h.get("url", "")
-                title_link = f'<a href="{url}" style="color:#64b5f6;text-decoration:none;">{h["title"][:100]}</a>' if url else h["title"][:100]
+
+                # 中文翻译 + 公司名高亮
+                title_cn = highlight_companies(h.get("title_cn", "")) if h.get("title_cn") else ""
+                # 英文原文 + 公司名高亮
+                title_en = highlight_companies(h["title"][:120])
+
+                title_html = ""
+                if url:
+                    if title_cn:
+                        title_html += f'<a href="{url}" style="color:#e0e0e0;text-decoration:none;font-weight:500;">{title_cn}</a>'
+                        title_html += f' <span style="color:#666;font-size:11px;">|</span> '
+                    title_html += f'<a href="{url}" style="color:#888;text-decoration:none;font-size:11px;">{title_en}</a>'
+                else:
+                    if title_cn:
+                        title_html += f'<span style="color:#e0e0e0;font-weight:500;">{title_cn}</span>'
+                        title_html += f' <span style="color:#666;font-size:11px;">|</span> '
+                    title_html += f'<span style="color:#888;font-size:11px;">{title_en}</span>'
+
                 headlines_html += f"""
-                <div style="padding:4px 0;font-size:12px;border-bottom:1px solid #1a1a2e;">
-                  <span style="color:{sc};margin-right:4px;">{s['label']}</span>
-                  {title_link}
-                  <span style="color:#555;"> — {h['provider'][:20]}</span>
+                <div style="padding:5px 0;border-bottom:1px solid #1a1a2e;line-height:1.5;">
+                  <span style="color:{sc};margin-right:4px;font-size:12px;">{s['label']}</span>
+                  {title_html}
+                  <span style="color:#555;font-size:11px;">— {h['provider'][:25]}</span>
                 </div>"""
             headlines_html += "</div>"
 
@@ -771,6 +959,7 @@ def save_news_data(news_list: list[dict]):
         slim_data.append({
             "ticker": item["ticker"],
             "title": item["title"],
+            "title_cn": item.get("title_cn", ""),
             "summary": item["summary"][:300],
             "url": item["url"],
             "provider": item["provider"],
