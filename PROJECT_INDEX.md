@@ -150,6 +150,11 @@
 | `debug_fetch.py` | IMAP 响应格式调试 |
 | `scan_all.py` | 全量扫描脚本（所有文件夹） |
 | `delete_all_ads.py` | 批量删除脚本（跨文件夹） |
+| `delete_temu.py` | Temu 关键词扫描+删除 |
+| `spam_temu.py` | 孤立邮件 MOVE 到垃圾邮件 |
+| `delete_old_ebay.py` | eBay 旧邮件按时间删除 |
+| `promotions_scan.py` | X-GM-RAW 推广邮件全量处理 |
+| `verify_temu.py` | Temu 残留验证 |
 
 ### 📂 mail/ — 其他文件
 
