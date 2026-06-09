@@ -3,7 +3,7 @@
 ---
 
 **Titel:**
-LG TONE Free FP9 True Wireless In-Ear Kopfhörer | ANC | UVnano | OVP
+LG TONE Free HBS-FN7 True Wireless In-Ear Kopfhörer | ANC | UVnano | OVP
 
 ---
 
@@ -11,19 +11,28 @@ LG TONE Free FP9 True Wireless In-Ear Kopfhörer | ANC | UVnano | OVP
 
 Hallo zusammen, 👋
 
-ich verkaufe hier meine LG TONE Free FP9 True Wireless Kopfhörer. Da ich sie in letzter Zeit kaum noch genutzt habe, suchen sie nun ein neues Zuhause, wo sie wieder regelmäßig zum Einsatz kommen.
+ich verkaufe hier meine LG TONE Free HBS-FN7 True Wireless Kopfhörer. Da ich sie in letzter Zeit kaum noch genutzt habe, suchen sie nun ein neues Zuhause, wo sie wieder regelmäßig zum Einsatz kommen.
 
 **Zustand:**
-Die Earbuds befinden sich in einem sehr guten Zustand (ca. 8,5 bis 9 von 10). Sie wurden stets pfleglich behandelt, regelmäßig gereinigt und funktionieren technisch einwandfrei. Auch die Akkus der Ohrhörer und des Cases halten noch hervorragend. Minimale, altersbedingte Gebrauchsspuren lassen sich bei einem Gebrauchtgerät natürlich nicht ganz vermeiden, fallen im Alltag aber nicht auf. Das Gerät stammt aus einem Nichtraucher- und tierfreien Haushalt. 🌿
+Die Earbuds befinden sich in einem sehr guten Zustand (ca. 8,5 bis 9 von 10). Sie wurden stets pfleglich behandelt, regelmäßig gereinigt und funktionieren technisch einwandfrei. Auch die Akkus der Ohrhörer und des Cases halten noch hervorragend. Minimale, altersbedingte Gebrauchsspuren lassen sich bei einem Gebrauchtgerät natürlich nicht ganz vermeiden, fallen im Alltag aber nicht auf.
+🆕 **Hygiene-Tipp:** Die Silikon-Ohrpassstücke wurden gegen **brandneue, unbenutzte Aufsätze** ausgetauscht – ihr könnt die Kopfhörer also direkt hygienisch und sorgenfrei tragen!
+Das Gerät stammt aus einem Nichtraucher- und tierfreien Haushalt. 🌿
 
 **Highlights & Features:**
-✨ **UVnano Desinfektion:** Das Ladeetui reinigt die Ohrhörer beim Laden automatisch mit UV-Licht und entfernt bis zu 99,9 % der Bakterien – extrem hygienisch!
-🎵 **Meridian Audio:** Dank der Meridian-Zertifizierung bieten die Kopfhörer einen beeindruckenden, räumlichen High-Res Sound.
-🔇 **Aktives Noise Cancelling (ANC):** Schaltet die Umwelt aus und sorgt für ungestörten Musikgenuss (inkl. Ambient-Modus).
-🔋 **USB-C Laden:** Schnell, unkompliziert und mit modernem Standard.
+✨ **UVnano Desinfektion:** Das Ladeetui reinigt die Ohrhörer beim Laden automatisch mit UV-C-Licht und entfernt bis zu 99,9 % der Bakterien – extrem hygienisch!
+🎵 **Meridian Audio:** Meridian-zertifizierter High-Res Sound mit räumlichem Klang (HSP) + 4 EQ-Modi (Immersive, Natural, Bass, Treble).
+🔇 **Aktives Noise Cancelling (ANC):** Blendet Umgebungsgeräusche aus, inkl. Ambient-Modus für Durchsage/Durchhören.
+🔋 **Akkulaufzeit & Laden:**
+   - Bis zu 5 Std. mit ANC / 7 Std. ohne ANC (pro Ladung)
+   - Bis zu 15 Std. mit ANC / 21 Std. ohne ANC (mit Ladecase)
+   - **Qi-Wireless Charging** + USB-C + Schnellladung (5 Min. → 1 Std. Wiedergabe)
+🌊 **IPX4 Spritzwasserschutz** – perfekt für Sport & Regen
+📡 **Bluetooth 5.0** mit Google Fast Pair
+👆 **Touch-Steuerung** + Trageerkennung (Auto-Pause beim Abnehmen)
+🎙️ **3 Mikrofone pro Hörer** für klare Anrufe
 
 **Lieferumfang (komplett & original):**
-📦 LG TONE Free FP9 Ohrhörer
+📦 LG TONE Free HBS-FN7 Ohrhörer
 📦 Originales Ladeetui (mit UVnano-Funktion)
 📦 Zusätzliche grüne Silikon-Schutzhülle (Schützt das Case vor Kratzern)
 📦 USB-C Ladekabel
@@ -31,7 +40,7 @@ Die Earbuds befinden sich in einem sehr guten Zustand (ca. 8,5 bis 9 von 10). Si
 📦 Originalverpackung (OVP)
 
 **Preis:**
-**75 € VB**
+**65 € VB**
 *(Bitte nur realistische Preisvorschläge, danke!)*
 
 **Versand & Bezahlung:**

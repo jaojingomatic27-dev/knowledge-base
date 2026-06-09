@@ -1,0 +1,14 @@
+PS C:\AI\cc\pvinverter> New-Item -ItemType Directory -Force -Path "C:\AI\cc\pvinverter\output"
+
+    目录: C:\AI\cc\pvinverter
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----          2026/6/6     21:56                output
+
+PS C:\AI\cc\pvinverter> Copy-Item -Path "C:\AI\cc\pvinverter\data\xiaohongshu_style_analysis.md" -Destination "C:\AI\cc\pvinverter\output\小红书专业账户风格分析.md"
+PS C:\AI\cc\pvinverter> Copy-Item -Path "C:\AI\cc\pvinverter\data\xiaohongshu_notes.md" -Destination "C:\AI\cc\pvinverter\output\欧盟政策知识库_小红书笔记_10页.md"
+
+PS C:\AI\cc\pvinverter> Get-ChildItem -Path "C:\AI\cc\pvinverter\output" -Name
+小红书专业账户风格分析.md
+欧盟政策知识库_小红书笔记_10页.md
