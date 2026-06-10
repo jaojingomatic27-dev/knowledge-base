@@ -19,6 +19,7 @@ input/ 照片 → code/auto_pipeline.py → bl omni 视觉识别
 | `output/` | 分析报告、上架文案、YAML 配置文件 |
 | `code/` | 自动化脚本（auto_pipeline.py） |
 | `data/` | 模板、定价参考数据 |
+| `terminal/` | 长输出归档（`output.md`） |
 
 ## 文件清单
 
