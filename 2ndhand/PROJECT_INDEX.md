@@ -22,6 +22,8 @@ input/ 照片 → code/auto_pipeline.py → bl omni 视觉识别
 
 ## 文件清单
 
+- `CLAUDE.md` — 项目级 Claude Code 指引
+
 ### code/
 - `auto_pipeline.py` — **主脚本**：扫描 input/ → bl 识别 → 生成报告 + 德语文案 + YAML
 
