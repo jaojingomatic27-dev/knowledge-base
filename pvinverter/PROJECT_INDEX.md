@@ -11,6 +11,7 @@
 - `xiaohongshu_style_analysis.md` — 小红书专业账户风格分析：Top 5 账户拆解、爆款公式、CES算法、标题/封面/正文模板
 - `xiaohongshu_notes.md` — 基于 EU_policy_knowledge_base_2026 改编的小红书笔记（10页），含标题建议、发布策略
 - `sinexcel_research.md` — Sinexcel（盛弘股份 300693）公司调研报告，含业务架构、欧洲布局、创始人背景、PCS技术深度分析
+- `sinexcel_germany_jd_analysis.md` — 盛弘德国子公司 JD 分析（德语区储能销售经理），逐条拆解 11 项任职要求及能力画像，全网评价搜索（Kununu/Glassdoor）
 
 ### terminal/
 - `output.md` — 长输出落盘：Sinexcel 调研总结、11张Pillow卡片生成记录

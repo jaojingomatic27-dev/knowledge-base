@@ -37,3 +37,12 @@
   - 创始人方兴背景：宝洁→捷普→中欧EMBA→35岁创业
   - PCS技术深度：模块化/多簇管理/VSG构网/98.5%效率/全球认证矩阵
 - **新增**: `terminal/output.md` — 长输出落盘，记录Sinexcel调研和Pillow卡片生成
+
+## 20260616-01
+
+- **新增**: `data/sinexcel_germany_jd_analysis.md` — 盛弘德国子公司招聘 JD 深度分析
+  - 职位: 德语区储能销售经理 DACH / Düsseldorf
+  - 逐条拆解 11 项任职要求，导出"50%商务 + 30%技术 + 20%人脉"复合型人才画像
+  - 全网评价搜索: Kununu/Glassdoor/Google Maps/Indeed 均无评价条目（公司太新规模太小）
+  - 正面: Brandon Hall 奖项 / VDE认证 / 菲尼克斯战略合作 / 拉脱维亚项目落地
+  - 发现: JD要求极其全面，说明德国子公司在0→1攻坚阶段
