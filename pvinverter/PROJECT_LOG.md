@@ -46,3 +46,13 @@
   - 全网评价搜索: Kununu/Glassdoor/Google Maps/Indeed 均无评价条目（公司太新规模太小）
   - 正面: Brandon Hall 奖项 / VDE认证 / 菲尼克斯战略合作 / 拉脱维亚项目落地
   - 发现: JD要求极其全面，说明德国子公司在0→1攻坚阶段
+
+## 20260616-02
+
+- **新增**: `data/dach_energy_industry_players.md` — 德语区储能行业玩家全解
+  - EPC: BELECTRIC / maxsolar / Greentech 等 6 家
+  - 系统集成商: Siemens / Fluence / Nidec / Tesvolt 等 6 家
+  - 开发商: ABO Wind / JUWI / BayWa r.e. 等 7 家
+  - Utility: E.ON / RWE / EnBW / Vattenfall / Stadtwerke 等 9 家
+  - IPP: Aquila Capital / Encavis / KGAL / SUSI Partners 等 10 家
+  - C-level 人脉解读：Utility VP / IPP Investment Director / EPC CTO / 开发商 CEO

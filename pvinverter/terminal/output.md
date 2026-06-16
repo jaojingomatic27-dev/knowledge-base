@@ -107,4 +107,41 @@
 | Glassdoor | 无条目 — 无公司页面、无员工评价 |
 | Google Maps / Indeed / LinkedIn | 无独立评价 |
 | 正面信息 | Brandon Hall 奖项(2025.12)、VDE 4110/4120 认证、"湾区行"媒体报道、菲尼克斯战略合作、拉脱维亚 20MW 风储项目落地 |
+| 负面/空白 | 公开渠道未找到任何员工/客户负面评价，但主要是因为公司太新规模太小 |
+
+---
+
+## 2026-06-16 — 德语区储能行业玩家全解
+
+### EPC / 系统集成商 / 开发商 / Utility / IPP 清单
+
+| 角色 | 德语区代表公司 |
+|------|-------------|
+| EPC | BELECTRIC, maxsolar, Greentech, GOLDBECK SOLAR, KRAFTWERK, Swiss Solar |
+| 系统集成商 | Siemens, Fluence, Nidec, NHOA, Intilion, Tesvolt |
+| 开发商 | ABO Wind, JUWI, BayWa r.e., PNE AG, Ib Vogt, Solarcentury |
+| Utility | E.ON, RWE, EnBW, Vattenfall, Stadtwerke (900+), Verbund, Axpo, Alpiq, BKW |
+| IPP | Aquila Capital, Blue Elephant Energy, Luxcara, Encavis, KGAL, Octopus Energy, Foresight, Gore Street, SUSI Partners, EIP |
+
+### C-level 人脉含义
+
+| 角色 | 采购决策位置 |
+|------|------------|
+| Utility 的 VP of Renewables | 拍板储能战略，批准大额采购 |
+| IPP 的 Investment Director | 决定投不投一个 BESS 项目 |
+| EPC 的 CTO | 决定项目技术路线用什么设备 |
+| 开发商 CEO | 项目源头，早期介入锁定设备选型 |
+
+→ JD 要的不是"打电话推销"的销售，是已经在德语区能源圈子里有人脉的、能直接给 E.ON 储能负责人打电话约饭的人。
+→ 这种人多在 SMA / Siemens / ABB / KACO / Fluence / Nidec 做过 5-10 年销售总监——盛弘就是在这些人才池里钓鱼。
+- JD 反映了德国子公司在 **0→1 攻坚阶段**，需要能独自扛起整条销售线的人
+
+### 全网评价搜索结果
+
+| 平台 | 结果 |
+|------|------|
+| Kununu | 无条目 — 未创建公司页面 |
+| Glassdoor | 无条目 — 无公司页面、无员工评价 |
+| Google Maps / Indeed / LinkedIn | 无独立评价 |
+| 正面信息 | Brandon Hall 奖项(2025.12)、VDE 4110/4120 认证、"湾区行"媒体报道、菲尼克斯战略合作、拉脱维亚 20MW 风储项目落地 |
 | 负面/空白 | 公开渠道未找到任何员工/客户负面评价，但主要是因为公司太新规模太小，非"口碑好到无人批评" |

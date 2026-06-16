@@ -12,6 +12,7 @@
 - `xiaohongshu_notes.md` — 基于 EU_policy_knowledge_base_2026 改编的小红书笔记（10页），含标题建议、发布策略
 - `sinexcel_research.md` — Sinexcel（盛弘股份 300693）公司调研报告，含业务架构、欧洲布局、创始人背景、PCS技术深度分析
 - `sinexcel_germany_jd_analysis.md` — 盛弘德国子公司 JD 分析（德语区储能销售经理），逐条拆解 11 项任职要求及能力画像，全网评价搜索（Kununu/Glassdoor）
+- `dach_energy_industry_players.md` — 德语区储能行业玩家全解：EPC/系统集成商/开发商/Utility/IPP 公司清单及 C-level 人脉解读
 
 ### terminal/
 - `output.md` — 长输出落盘：Sinexcel 调研总结、11张Pillow卡片生成记录
