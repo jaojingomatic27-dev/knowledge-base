@@ -56,3 +56,13 @@
   - Utility: E.ON / RWE / EnBW / Vattenfall / Stadtwerke 等 9 家
   - IPP: Aquila Capital / Encavis / KGAL / SUSI Partners 等 10 家
   - C-level 人脉解读：Utility VP / IPP Investment Director / EPC CTO / 开发商 CEO
+
+## 20260616-03
+
+- **新增**: `data/pcs_export_certification_guide.md` — 中国储能PCS逆变器出口德国认证全指南
+  - 必须认证: CE(LVD+EMC+RoHS+REACH) + VDE 4105/4110/4120 + EN 50549-1/-2/-10
+  - 推荐认证: IEC 62619 / VDE 2510-50 / ErP / 功能安全 / C5防腐
+  - 全部实验室认证可在中国完成（TÜV南德广州/莱茵中国有DAkkS资质）
+  - 必须在德国的只有: ZEREZ在线注册 + 电网运营商现场验收（项目环节）
+  - 认证路径: 6-8个月 / ¥40-90万 / 0次出差德国
+  - 原理: DAkkS认可=德国法律效力，中国实验室出具的DAkkS证书与德国本土等效
