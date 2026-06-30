@@ -13,6 +13,7 @@
 7. **自动提交**：更新 `PROJECT_LOG.md` 后自动 push。版本号 `YYYYMMDD-HH`，写入 commit message。
 8. **时区**：所有项目时间使用德国时间。Python 代码统一用 `datetime.now().astimezone()` 获取本地时间（自动跟随 Windows 系统时区处理 CEST/CET 夏令时冬令时切换），禁止硬编码 `timedelta(hours=2)`。定时任务、日志均以德国本地时间为准。
 9. **长总结落盘**：当回复中的总结/列表/表格超过 20 行时，自动写入 `terminal/output.md`（追加模式，`##` 标题 + 日期时间戳）。若项目下无 `terminal/` 文件夹或无 `output.md` 文件，自动创建。
+10. **Python 中文编码**：含中文字符的 Python 代码**禁止**通过 PowerShell `python -c "..."` 内联执行。必须先用 `Write` 工具写入 `.py` 文件（UTF-8 编码），再用 `python file.py` 运行。原因：PowerShell 5.1 对内联中文的编码传递会损坏字符，导致 Pillow/matplotlib 等库生成的图片中文乱码。
 
 ## 环境
 
