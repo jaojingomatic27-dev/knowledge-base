@@ -1,8 +1,24 @@
-# terminal/output.md
+# -*- coding: utf-8 -*-
+"""Rebuild terminal/output.md from data files + append new sections"""
+
+import os
+from datetime import datetime
+
+base = r"C:\AI\cc\pvinverter"
+data = os.path.join(base, "data")
+term = os.path.join(base, "terminal")
+os.makedirs(term, exist_ok=True)
+
+now = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+sections = []
+
+# Section 1: Sinexcel research summary
+sections.append("""# terminal/output.md
 
 ---
 
-## 2026-06-30 21:07 — Sinexcel（盛弘股份 300693）公司调研
+## """ + now + """ — Sinexcel（盛弘股份 300693）公司调研
 
 ### 一、在欧洲有工厂吗？
 
@@ -49,7 +65,7 @@
 
 ---
 
-## 2026-06-30 21:07 — 11张小红书白底知识卡片生成 (Pillow)
+## """ + now + """ — 11张小红书白底知识卡片生成 (Pillow)
 
 生成 11 张纯白背景竖版知识卡片（1080x1440）：
 - `00_开头.png` — 封面主标题 + 七色标签 + 核心矛盾
@@ -65,11 +81,14 @@
 - `10_时间线.png` — 2023-2034 时间线 + 核心结论
 
 工具：Pillow（Python），存放：`output/covers/notes_pillow/`
+""")
 
+# Section 2: JD analysis
+sections.append("""
 
 ---
 
-## 2026-06-30 21:07 — 盛弘德国子公司 JD 分析 + 全网评价搜索
+## """ + now + """ — 盛弘德国子公司 JD 分析 + 全网评价搜索
 
 ### JD 核心信息
 
@@ -108,11 +127,14 @@
 | Google Maps / Indeed / LinkedIn | 无独立评价 |
 | 正面信息 | Brandon Hall 奖项、VDE 4110/4120 认证、"湾区行"媒体报道、菲尼克斯战略合作、拉脱维亚 20MW 风储项目落地 |
 | 负面/空白 | 公开渠道未找到任何员工/客户负面评价，但主要是因为公司太新规模太小 |
+""")
 
+# Section 3: DACH players
+sections.append("""
 
 ---
 
-## 2026-06-30 21:07 — 德语区储能行业玩家全解
+## """ + now + """ — 德语区储能行业玩家全解
 
 ### EPC / 系统集成商 / 开发商 / Utility / IPP 清单
 
@@ -134,11 +156,14 @@
 | 开发商 CEO | 项目源头，早期介入锁定设备选型 |
 
 JD 要的不是"打电话推销"的销售，是已经在德语区能源圈子里有人脉的、能直接给 E.ON 储能负责人打电话约饭的人。这种人多在 SMA / Siemens / ABB / KACO / Fluence / Nidec 做过 5-10 年销售总监——盛弘就是在这些人才池里钓鱼。
+""")
 
+# Section 4: Certification guide
+sections.append("""
 
 ---
 
-## 2026-06-30 21:07 — 中国储能PCS逆变器出口德国认证全指南
+## """ + now + """ — 中国储能PCS逆变器出口德国认证全指南
 
 ### 必须认证
 
@@ -169,11 +194,14 @@ IEC 62619 / VDE 2510-50 / ErP 2019/1782 / IEC 61508 功能安全 / C5防腐
 - 时间: 6-8 个月（最低）至 10-14 个月（最佳）
 - 费用: 40-90 万
 - 出差德国: 0 次
+""")
 
+# Section 5: 500MW plan
+sections.append("""
 
 ---
 
-## 2026-06-30 21:07 — 500MW目标：中国PCS厂商在德国建分支机构的必要性与方案
+## """ + now + """ — 500MW目标：中国PCS厂商在德国建分支机构的必要性与方案
 
 ### 核心判断：必须要建
 
@@ -208,11 +236,14 @@ IEC 62619 / VDE 2510-50 / ErP 2019/1782 / IEC 61508 功能安全 / C5防腐
 ### 结论
 
 **必须建。第一年投入约 EUR 60-90 万，进入 500MW 俱乐部的入场券。**
+""")
 
+# Section 6: Solution Engineer Role
+sections.append("""
 
 ---
 
-## 2026-06-30 21:07 — PCS技术方案/售前工程师岗位详解
+## """ + now + """ — PCS技术方案/售前工程师岗位详解
 
 ### 职责范围
 
@@ -233,11 +264,14 @@ IEC 62619 / VDE 2510-50 / ErP 2019/1782 / IEC 61508 功能安全 / C5防腐
 
 文件: `data/solution_engineer_role_deep_dive.md`
 速查图: `output/solution_engineer_cheatsheet.png`
+""")
 
+# Section 7: Sales vs Presales
+sections.append("""
 
 ---
 
-## 2026-06-30 21:07 — 销售 vs 售前 vs 方案工程师：区别与协作
+## """ + now + """ — 销售 vs 售前 vs 方案工程师：区别与协作
 
 ### 称呼澄清
 
@@ -262,11 +296,14 @@ IEC 62619 / VDE 2510-50 / ErP 2019/1782 / IEC 61508 功能安全 / C5防腐
 2. 能力的天然矛盾——人际vs逻辑，商务嗅觉vs技术深度
 3. 客户有两个接口——采购部门和工程部门各需要一个对口人
 4. 签字责任不同——技术参数承诺 vs 商务条款承诺
+""")
 
+# Section 8: Encoding fix + global rules
+sections.append("""
 
 ---
 
-## 2026-06-30 21:07 — 中文图片编码问题彻底修复 + 全局规则更新
+## """ + now + """ — 中文图片编码问题彻底修复 + 全局规则更新
 
 ### 问题根源
 
@@ -277,8 +314,17 @@ PowerShell 5.1 内联执行含中文Python代码时编码损坏。Pillow字体�
 1. 含中文图片：HTML meta charset=UTF-8 + CSS排版 + Playwright Chromium截图（device_scale_factor=2）
 2. 含中文文本：Python open(path, "w", encoding="utf-8") 写入（禁止PowerShell Set-Content/Out-File）
 
-### 全局规则更新 (C:\AI\cc\CLAUDE.md)
+### 全局规则更新 (C:\\AI\\cc\\CLAUDE.md)
 
 **规则 10**：含中文字符的Python代码禁止通过PowerShell内联执行。必须先Write写.py再用python运行。
 **规则 11**：中文信息图首选HTML+Playwright截图方案。Pillow仅用于无中文图片。
 **规则 12**：含中文文本禁止用PowerShell Set-Content/Out-File写入。必须用Python open(encoding="utf-8")写入。
+""")
+
+# Write final file
+output_path = os.path.join(term, "output.md")
+with open(output_path, "w", encoding="utf-8") as f:
+    f.write("".join(sections))
+
+print("OK: " + output_path)
+print("Lines: " + str(sum(1 for _ in open(output_path, encoding="utf-8"))))
