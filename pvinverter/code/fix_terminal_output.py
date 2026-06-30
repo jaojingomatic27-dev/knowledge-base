@@ -1,4 +1,7 @@
-# terminal/output.md
+# -*- coding: utf-8 -*-
+import os
+
+content = """# terminal/output.md
 
 ---
 
@@ -255,3 +258,10 @@ IEC 62619 / VDE 2510-50 / ErP 2019/1782 / IEC 61508 功能安全 / C5防腐
 ### 结论
 
 **必须建。第一年投入约 €60-90 万，占目标收入不到 2.5%，是进入 500MW 俱乐部的入场券。**
+"""
+
+path = r"C:\AI\cc\pvinverter\terminal\output.md"
+os.makedirs(os.path.dirname(path), exist_ok=True)
+with open(path, "w", encoding="utf-8") as f:
+    f.write(content)
+print("OK: " + path)
