@@ -11,7 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## 核心流水线
 
 ```
-input/ 照片 → python code/auto_pipeline.py
+input/ 照片 → python code/auto_pipeline.py（或手动走 bl 流程）
                 ├─ bl omni (qwen3.5-omni-plus)  视觉识别 → JSON 物品清单
                 ├─ bl text chat (qwen3.7-max)    德语 Kleinanzeigen 文案
                 ├─ 生成 ad_*.yaml                kleinanzeigen-bot 配置
@@ -37,7 +37,29 @@ python code/auto_pipeline.py
 
 ## 硬性规则
 
-### eBay 声明
+### 1. 物品描述简洁
+
+德语文案：直击核心卖点 3-5 条，不堆砌废话。列出关键规格即可，不写长篇叙事。
+
+### 2. 照片按商品分文件夹
+
+`input/` 下的照片**必须按不同商品分入各自子文件夹**，一个子文件夹 = 一件商品：
+
+```
+input/
+  ├─ lg_hbs_fn7/          ← 这件商品的所有照片
+  │    ├─ 照片1.jpg
+  │    └─ 照片2.jpg
+  └─ roomba_966/          ← 另一件商品
+       ├─ 照片1.jpg
+       └─ 照片2.jpg
+```
+
+- 子文件夹名用英文 slug 格式（如 `lg_hbs_fn7`、`roomba_966`）
+- 新增物品时手动建子文件夹，把对应照片移入
+- pipeline 会按子文件夹遍历
+
+### 3. eBay 声明
 
 **每条德语上架文案末尾必须一字不改附加：**
 
@@ -47,20 +69,28 @@ Es handelt sich um einen Privatverkauf. Ich übernehme keine Garantie und Rückn
 
 模板保存在 `data/ebay_disclaimer_de.md`，供参考。
 
+### 4. 账户信息
+
+Kleinanzeigen 账户密码在 `account.txt`（第一行邮箱，第二行密码）。生成 YAML 时写入对应字段，或传给 kleinanzeigen-bot config。
+
+### 5. 上架前确认价格
+
+生成 YAML 后、执行 `publish` 前，**必须**把每样物品的建议售价展示给用户确认。用户同意后才能执行上架命令。
+
 ### Kleinanzeigen 分类映射
 
-`auto_pipeline.py` 内置了关键词→分类层级映射（`CATEGORY_GUESS`）。添加新品类时扩展该 dict。
+`auto_pipeline.py` 内置关键词→分类层级映射（`CATEGORY_GUESS`）。添加新品类时扩展该 dict。
 
 ### kleinanzeigen-bot YAML 关键字段
 
-YAML 由 `auto_pipeline.py` 生成，无外部 yaml 库依赖。字段遵循 [kleinanzeigen-bot](https://github.com/Second-Hand-Friends/kleinanzeigen-bot) 规范：
+YAML 由 `auto_pipeline.py` 生成（无外部 yaml 库依赖）。字段遵循 [kleinanzeigen-bot](https://github.com/Second-Hand-Friends/kleinanzeigen-bot) 规范：
 
 - `title` — 最长 80 字符
-- `description` — 多行用 `|` 块标量
+- `description` — 多行用 `|` 块标量，**简洁**，不写长篇叙事
 - `price` / `price_type` — NEGOTIABLE / FIXED / GIVE_AWAY
 - `shipping_type` — SHIPPING / PICKUP / NOT_APPLICABLE
-- `special_attributes.condition_s` — like_new / ok / alright / defect（成色 9+ → like_new, 7+ → ok, 5+ → alright）
-- `images` — 相对路径 glob，图片须在 `output/images/` 下
+- `special_attributes.condition_s` — like_new / ok / alright / defect
+- `images` — 相对路径 glob，图片在 `output/images/` 下
 
 ### 模型选择
 

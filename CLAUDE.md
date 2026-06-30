@@ -14,6 +14,7 @@
 8. **时区**：所有项目时间使用德国时间。Python 代码统一用 `datetime.now().astimezone()` 获取本地时间（自动跟随 Windows 系统时区处理 CEST/CET 夏令时冬令时切换），禁止硬编码 `timedelta(hours=2)`。定时任务、日志均以德国本地时间为准。
 9. **长总结落盘**：当回复中的总结/列表/表格超过 20 行时，自动写入 `terminal/output.md`（追加模式，`##` 标题 + 日期时间戳）。若项目下无 `terminal/` 文件夹或无 `output.md` 文件，自动创建。
 10. **Python 中文编码**：含中文字符的 Python 代码**禁止**通过 PowerShell `python -c "..."` 内联执行。必须先用 `Write` 工具写入 `.py` 文件（UTF-8 编码），再用 `python file.py` 运行。原因：PowerShell 5.1 对内联中文的编码传递会损坏字符，导致 Pillow/matplotlib 等库生成的图片中文乱码。
+11. **中文信息图首选 HTML+Playwright 截图**：需要生成含大量中文文字的图片（如小红书封面、知识卡片、速查图）时，首选方案：① Write 工具写 HTML 文件（`<meta charset="UTF-8">`）→ ② 用 `playwright` 库截图转 PNG（`device_scale_factor=2` 保证清晰度）。Pillow 仅用于无中文或极少量中文的纯色块图片。原因：HTML 的中文渲染不受 Python 编码问题影响，且 CSS 排版灵活度远超 Pillow。
 
 ## 环境
 

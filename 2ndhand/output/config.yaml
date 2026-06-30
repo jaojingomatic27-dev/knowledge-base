@@ -1,0 +1,21 @@
+login:
+  username: "jaojing@hotmail.com"
+  password: "Jj7654321!"
+
+browser:
+  arguments:
+    - --remote-debugging-port=9222
+    - --user-data-dir=C:\AI\cc\2ndhand\output\.temp\chrome-debug-profile
+    - --disable-dev-shm-usage
+  user_data_dir: "C:\\AI\\cc\\2ndhand\\output\\.temp\\chrome-debug-profile"
+  binary_location: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+
+ad_files:
+  - "ad_*.yaml"
+
+ad_defaults:
+  price_type: NEGOTIABLE
+  shipping_type: SHIPPING
+  republication_interval: 7
+  contact:
+    name: "J"

@@ -1,0 +1,6 @@
+2026/06/10-20:55:46.314 5f18 Reusing MANIFEST C:\AI\cc\2ndhand\output\.temp\chrome-debug-profile\Default\Local Storage\leveldb/MANIFEST-000001
+2026/06/10-20:55:46.320 5f18 Recovering log #8
+2026/06/10-20:55:46.322 5f18 Reusing old log C:\AI\cc\2ndhand\output\.temp\chrome-debug-profile\Default\Local Storage\leveldb/000008.log 
+2026/06/10-21:03:48.127 3118 Level-0 table #12: started
+2026/06/10-21:03:48.144 3118 Level-0 table #12: 43177 bytes OK
+2026/06/10-21:03:48.146 3118 Delete type=0 #8

@@ -1,0 +1,11 @@
+2026/06/10-20:43:15.090 599c Creating DB C:\AI\cc\2ndhand\output\.temp\chrome-debug-profile\Default\Local Storage\leveldb since it was missing.
+2026/06/10-20:43:15.118 599c Reusing MANIFEST C:\AI\cc\2ndhand\output\.temp\chrome-debug-profile\Default\Local Storage\leveldb/MANIFEST-000001
+2026/06/10-20:44:15.133 3a00 Level-0 table #5: started
+2026/06/10-20:44:15.137 3a00 Level-0 table #5: 30749 bytes OK
+2026/06/10-20:44:15.140 3a00 Delete type=0 #3
+2026/06/10-20:46:54.363 3a00 Level-0 table #7: started
+2026/06/10-20:46:54.367 3a00 Level-0 table #7: 22701 bytes OK
+2026/06/10-20:46:54.370 3a00 Delete type=0 #4
+2026/06/10-20:51:30.617 3a00 Level-0 table #9: started
+2026/06/10-20:51:30.628 3a00 Level-0 table #9: 17913 bytes OK
+2026/06/10-20:51:30.630 3a00 Delete type=0 #6
