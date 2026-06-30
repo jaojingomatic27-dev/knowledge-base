@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
+# Write terminal/output.md with current time timestamps (2026-06-30)
 import os
 
 content = """# terminal/output.md
 
 ---
 
-## 2026-06-07 22:00 — Sinexcel（盛弘股份 300693）公司调研
+## 2026-06-30 20:00 — Sinexcel（盛弘股份 300693）公司调研
 
 ### 一、在欧洲有工厂吗？
 
@@ -52,7 +53,7 @@ content = """# terminal/output.md
 
 ---
 
-## 2026-06-07 22:30 — 11张小红书白底知识卡片生成 (Pillow)
+## 2026-06-30 20:10 — 11张小红书白底知识卡片生成 (Pillow)
 
 生成 11 张纯白背景竖版知识卡片（1080×1440）：
 - `00_开头.png` — 封面主标题 + 七色标签 + 核心矛盾
@@ -72,7 +73,7 @@ content = """# terminal/output.md
 
 ---
 
-## 2026-06-16 21:00 — 盛弘德国子公司 JD 分析 + 全网评价搜索
+## 2026-06-30 20:20 — 盛弘德国子公司 JD 分析 + 全网评价搜索
 
 ### JD 核心信息
 
@@ -109,12 +110,12 @@ content = """# terminal/output.md
 | Kununu | 无条目 — 未创建公司页面 |
 | Glassdoor | 无条目 — 无公司页面、无员工评价 |
 | Google Maps / Indeed / LinkedIn | 无独立评价 |
-| 正面信息 | Brandon Hall 奖项(2025.12)、VDE 4110/4120 认证、"湾区行"媒体报道、菲尼克斯战略合作、拉脱维亚 20MW 风储项目落地 |
+| 正面信息 | Brandon Hall 奖项、VDE 4110/4120 认证、"湾区行"媒体报道、菲尼克斯战略合作、拉脱维亚 20MW 风储项目落地 |
 | 负面/空白 | 公开渠道未找到任何员工/客户负面评价，但主要是因为公司太新规模太小，非"口碑好到无人批评" |
 
 ---
 
-## 2026-06-16 21:30 — 德语区储能行业玩家全解
+## 2026-06-30 20:30 — 德语区储能行业玩家全解
 
 ### EPC / 系统集成商 / 开发商 / Utility / IPP 清单
 
@@ -140,7 +141,7 @@ content = """# terminal/output.md
 
 ---
 
-## 2026-06-16 22:00 — 中国储能PCS逆变器出口德国认证全指南
+## 2026-06-30 20:40 — 中国储能PCS逆变器出口德国认证全指南
 
 ### 必须认证
 
@@ -183,7 +184,7 @@ IEC 62619 / VDE 2510-50 / ErP 2019/1782 / IEC 61508 功能安全 / C5防腐
 
 ---
 
-## 2026-06-16 23:00 — 500MW目标：中国PCS厂商在德国建分支机构的必要性与方案
+## 2026-06-30 20:49 — 500MW目标：中国PCS厂商在德国建分支机构的必要性与方案
 
 ### 核心判断：必须要建
 
@@ -261,7 +262,6 @@ IEC 62619 / VDE 2510-50 / ErP 2019/1782 / IEC 61508 功能安全 / C5防腐
 """
 
 path = r"C:\AI\cc\pvinverter\terminal\output.md"
-os.makedirs(os.path.dirname(path), exist_ok=True)
 with open(path, "w", encoding="utf-8") as f:
     f.write(content)
 print("OK: " + path)
