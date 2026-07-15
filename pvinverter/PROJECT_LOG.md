@@ -99,5 +99,12 @@
   - 按产品分类: 光伏组件5家、逆变器2家(FORTUNES SOLAR/VDS)、支架1家(MG SOLAR)、材料1家、便携式太阳能1家
   - 关键发现: ELECWAY(德国杜塞尔多夫实体)可能是本地渠道伙伴；无大型EPC/Utility/IPP名片
   - 建议后续参加 E-World(Essen)/Energy Storage Europe(Dusseldorf)接触本地项目方
+
+## 20260715-01
+
+- **新增**: `data/solaredge_smart_meter_charge_control.md` — SolarEdge电池逆变器无PV场景自动充电问题
+  - 诊断: 自己品牌Smart Meter协议不兼容 → Meter通信丢失 → Energy Manager安全兜底 → 自动充电
+  - 结论: 逆变器Energy Manager决定充放电，Smart Meter只负责测量
+  - 三套方案: 买原厂Meter(€150/推荐) / 仿冒协议 / Modbus TCP强控
   - 为什么不能合并: 写标书是全职工种 / 能力的天然矛盾 / 客户需要两个接口 / 签字责任不同
   - 中国公司常见误区: "招有技术背景的销售就行"——在德语区不可行

@@ -18,6 +18,7 @@
 - `solution_engineer_role_deep_dive.md` — PCS技术方案/售前工程师岗位详解：职责范围（核心+延伸）、硬技能/软技能要求、为什么必须在德国（5个不可替代理由）、招聘JD草稿
 - `sales_vs_presales_vs_solution_engineer.md` — 销售 vs 售前 vs 方案工程师的区别与协作：同一客户的对话对比、KPI/产出/性格/知识结构差异、为什么不能合并、500MW项目协作流程图
 - `intersolar_2026_contacts_analysis.md` — Intersolar Europe 2026 名片整理分析：15家公司按产品分类、逆变器同行识别(2家)、ELECWAY(德国杜塞尔多夫实体)等关键发现
+- `solaredge_smart_meter_charge_control.md` — SolarEdge电池逆变器无PV场景下自动充电问题诊断：Energy Manager vs Smart Meter 职责分析、安全兜底逻辑、三套解决方案
 
 ### input/Intersolar Europe 2026/
 - `名片.txt` — OCR 提取的名片文字（17条记录）

@@ -344,3 +344,46 @@ PowerShell 5.1 内联执行含中文Python代码时编码损坏。Pillow字体�
 ### 建议
 
 ELECWAY 是这批名片中唯一在德国(杜塞尔多夫)有实体办公室的非中国企业，两位联系人 (Alex Cernov + Steven VP)。充电桩与储能在德国地面电站场景下经常配套，值得主动联系——即使不直接合作，也可能通过他们接触到德国本地 EPC/项目方人脉。
+
+
+---
+
+## 2026-07-15 21:27 — SolarEdge电池逆变器无PV场景自动充电问题
+
+### 一句话结论
+
+**逆变器的 Energy Manager 决定充放电，不是 Smart Meter。** Smart Meter 只是尺子——只会量不会管。
+
+### 三个角色
+
+| 组件 | 类比 | 功能 |
+|------|------|------|
+| Smart Meter | 温度计 | 只负责读数（RS485报文：电网关口功率/电压/电流） |
+| Energy Manager | 恒温器控制器 | 读到数据→做判断→下指令 |
+| 功率电路 | 空调/暖气 | 执行指令 |
+
+### 问题链路
+
+自己品牌Smart Meter不被识别 → Energy Manager问3次无回应 → Meter Communication Lost → 安全兜底逻辑触发 → 开机立刻从电网取电充电。SOC>50%也无效。
+
+### 谁做哪些事
+
+- 测量电网功率: Smart Meter（RS485每秒一次）
+- 测量电池SOC: 逆变器 BMS 通讯
+- 充放电判断: **逆变器 Energy Manager**
+- 执行充/放电: 逆变器功率电路
+- 兜底保护（收不到数据）: **逆变器 Energy Manager → 自动充电**
+
+### 解决方案
+
+1. 买 SolarEdge 原厂 Modbus Meter (~€150) — 5分钟生效，推荐
+2. 自己品牌 Smart Meter 仿冒 SolarEdge 协议 — 开发成本高
+3. Modbus TCP 写寄存器强控(地址 0xE004-0xE00A) — 需外置控制器
+
+### 额外设置确认
+
+- Storage Mode → Backup Only / Remote Control
+- AC Charge / Grid Charging → Disabled
+- Meter Status → 确认 OK
+
+文件: `data/solaredge_smart_meter_charge_control.md`
