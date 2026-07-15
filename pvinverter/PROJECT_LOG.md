@@ -91,5 +91,13 @@
   - 称呼澄清: 方案工程师 = 售前工程师 = Solution Engineer（同岗位不同叫法）
   - 核心差异表: KPI/工作产出/面对的人/语言/性格/知识结构/出差模式/赚钱方式 8个维度
   - 500MW项目从线索到售后的8阶段协作流程
+
+## 20260630-10
+
+- **新增**: `data/intersolar_2026_contacts_analysis.md` — Intersolar Europe 2026 名片整理分析
+  - 解析 17 条 OCR 名片记录，识别 15 家独立公司
+  - 按产品分类: 光伏组件5家、逆变器2家(FORTUNES SOLAR/VDS)、支架1家(MG SOLAR)、材料1家、便携式太阳能1家
+  - 关键发现: ELECWAY(德国杜塞尔多夫实体)可能是本地渠道伙伴；无大型EPC/Utility/IPP名片
+  - 建议后续参加 E-World(Essen)/Energy Storage Europe(Dusseldorf)接触本地项目方
   - 为什么不能合并: 写标书是全职工种 / 能力的天然矛盾 / 客户需要两个接口 / 签字责任不同
   - 中国公司常见误区: "招有技术背景的销售就行"——在德语区不可行

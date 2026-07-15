@@ -17,6 +17,11 @@
 - `germany_subsidiary_500mw_plan.md` — 500MW目标：中国PCS厂商在德国建分支机构的必要性分析，含职能设计（8-13人）、三阶段路线图、年费用估算（€60-90万）、ROI验证
 - `solution_engineer_role_deep_dive.md` — PCS技术方案/售前工程师岗位详解：职责范围（核心+延伸）、硬技能/软技能要求、为什么必须在德国（5个不可替代理由）、招聘JD草稿
 - `sales_vs_presales_vs_solution_engineer.md` — 销售 vs 售前 vs 方案工程师的区别与协作：同一客户的对话对比、KPI/产出/性格/知识结构差异、为什么不能合并、500MW项目协作流程图
+- `intersolar_2026_contacts_analysis.md` — Intersolar Europe 2026 名片整理分析：15家公司按产品分类、逆变器同行识别(2家)、ELECWAY(德国杜塞尔多夫实体)等关键发现
+
+### input/Intersolar Europe 2026/
+- `名片.txt` — OCR 提取的名片文字（17条记录）
+- `扫描_20260625.jpg` — 名片扫描件（共4张）
 
 ### terminal/
 - `output.md` — 长输出落盘：Sinexcel 调研总结、11张Pillow卡片生成记录
