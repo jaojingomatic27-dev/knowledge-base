@@ -1,4 +1,15 @@
-# Intersolar Europe 2026 — 名片联系人整理与分析 V2
+# -*- coding: utf-8 -*-
+"""Consolidated Intersolar contacts research — V2"""
+
+out = r"C:\AI\cc\pvinverter\data\intersolar_2026_contacts_analysis.md"
+
+lines = []
+
+# Read raw card data
+with open(r"C:\AI\cc\pvinverter\input\Intersolar Europe 2026\名片.txt", "r", encoding="utf-8") as f:
+    raw = f.read()
+
+lines.append("""# Intersolar Europe 2026 — 名片联系人整理与分析 V2
 
 > **来源**: `input/Intersolar Europe 2026/名片.txt`
 > **展会**: Intersolar Europe 2026（慕尼黑）
@@ -90,3 +101,9 @@
 | **ELECWAY** | 杜塞本地充电桩公司 | 高 | **德国本地公司**，充电桩+储能有交叉场景，可探讨渠道合作/本地人脉介绍 |
 | **宁波晶华 (JHBOX)** | 光伏板保护电路 | 高(你的问题) | 接线盒厂家，肖炯 International Sales Director |
 | **MG SOLAR** | 光伏支架 | 中 | 支架+逆变器在项目中常一起采购，Megan 在西班牙有布局 |
+""")
+
+with open(out, "w", encoding="utf-8") as f:
+    f.write("\n".join(lines))
+
+print("V2 written: " + out)
