@@ -387,3 +387,44 @@ ELECWAY 是这批名片中唯一在德国(杜塞尔多夫)有实体办公室的�
 - Meter Status → 确认 OK
 
 文件: `data/solaredge_smart_meter_charge_control.md`
+
+
+---
+
+## 2026-07-15 21:32 — 逆变器 Energy Manager 工作原理
+
+### 一句话概括
+
+Energy Manager 是逆变器的"操作系统调度器"——每秒轮询所有传感器 → 跑一组优先级规则 → 输出三个数字：充/放/待机 + 功率值。Smart Meter 只是其中一个传感器。
+
+### 典型场景举例
+
+一个典型的德国户用家庭（有 PV + 电池），太阳正好的下午 2 点：
+
+逆变器从 Smart Meter 读到：电网关口 = 0kW（不买也不卖）
+逆变器从 PV MPPT 读到：PV 发电 = 5kW
+逆变器从 BMS 读到：SOC = 60%
+逆变器从负载侧读到：家里用电 = 2kW
+
+Energy Manager 的 CPU 跑完这些逻辑后的结论：
+"PV(5kW) - 负载(2kW) = 剩余 3kW → 电池 SOC 才 60% → 全拿去充电"
+→ 输出指令给功率电路："以 3kW 充电池。"
+
+### 每秒一次的决策循环
+
+Energy Manager 内部其实就是一个每秒循环一次的软件控制器：
+
+1. 读所有传感器（每秒一次 RS485/CAN 轮询）
+2. 对比当前工作模式（MSC/Backup/Remote Control）
+3. 按优先级排序：负载 > 电池充电 > 卖电网
+4. 考虑约束：电池最大充放电功率、SOC 上下限、电网关口限值
+5. 输出功率指令给 DC/AC 双向变换器
+6. 等下一秒 → 回到步骤 1
+
+### 关键结论
+
+Smart Meter 的作用就是给 Energy Manager 看一张照片："现在电网关口长什么样。"
+但这张照片给不给得到，100% 取决于逆变器能不能读懂 Smart Meter 的协议。
+如果读不懂 → 照片是黑的 → Energy Manager 看不见外面 → 安全兜底。
+
+文件: `data/solaredge_smart_meter_charge_control.md`
