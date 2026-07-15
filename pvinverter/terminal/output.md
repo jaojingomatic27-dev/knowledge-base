@@ -282,3 +282,32 @@ PowerShell 5.1 内联执行含中文Python代码时编码损坏。Pillow字体�
 **规则 10**：含中文字符的Python代码禁止通过PowerShell内联执行。必须先Write写.py再用python运行。
 **规则 11**：中文信息图首选HTML+Playwright截图方案。Pillow仅用于无中文图片。
 **规则 12**：含中文文本禁止用PowerShell Set-Content/Out-File写入。必须用Python open(encoding="utf-8")写入。
+
+
+---
+
+## 2026-07-15 20:50 — Intersolar Europe 2026 名片整理分析
+
+### 数据来源
+
+`input/Intersolar Europe 2026/名片.txt` — OCR 识别名片共 17 条记录，解析出 15 家独立公司。
+
+### 公司分类
+
+| 类型 | 数量 | 代表公司 |
+|------|------|---------|
+| 光伏组件/电池 | 5 | JMTHY, PERLIGHT, ERA, 正信光电, Haitai Solar |
+| 光伏逆变器 | 2 | FORTUNES SOLAR, VDS |
+| 光伏支架 | 1 | MG SOLAR (厦门，西班牙有号码) |
+| 光伏材料 | 1 | Qujing Huanju |
+| 便携式太阳能 | 1 | Sola-E |
+| 非光伏 | 1 | SHIMGE (水泵) |
+| 不详 | 4 | GOLAND CENTURY, ELECWAY, APsolway, 英发 |
+
+### 关键发现
+
+- **Electronic Way GmbH (ELECWAY)** — 唯一在德国杜塞尔多夫有实体办公室的公司，两位联系人 (Alex Cernov + Steven VP)，可能是本地渠道伙伴
+- **FORTUNES SOLAR** — 逆变器同行，Trade Manager Bruce 可跟进了解产品定位
+- **MG SOLAR** — 光伏支架厂，Managing Partner Megan 有西班牙号码 (+34)，支架+逆变器常一起采购，可探讨渠道合作
+- **无大型 EPC/Utility/IPP 名片** — 这批名片以中国参展供应商为主，缺乏本地项目方
+- **后续建议**: 参加 E-World (Essen) / Energy Storage Europe (Dusseldorf) 接触本地项目方
